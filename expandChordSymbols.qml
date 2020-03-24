@@ -25,11 +25,45 @@ MuseScore {
     description: "Expands chord symbols into a staff"
     menuPath: "Plugins.ExpandChordSymbols"
 
-    // abstractNotes object in the form {degree: <adjustment value>, ...}
-    // chordSpec
-    // interval
-    // midi note - arrays of midinotes are assumed to be sorted by ascending pitch
+    // string
     // score chord symbol {tick: <tick>, text: <chord symbol text>, duration: <ticks>}
+    // chordSpec
+    // abstractNotes object in the form {degree: <adjustment value>, ...}
+    // interval (above C, above tonic)
+    // midi note - arrays of midinotes are assumed to be sorted by ascending pitch
+
+
+    // Returns the interval above C that corresponds to the letter/sharp/flat fields in "spec"
+    function letterToInterval(spec) {
+        var letterToSemi = {C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11};
+        var result = letterToSemi[spec.letter.toUpperCase()];
+        if (spec.flat) result--;
+        if (spec.sharp) result++;
+        if (result > 11) result -= 12;
+        if (result < 0) result += 12;
+        return result;
+    }
+
+    // Returns a midiNote in the octave below middle C that corresponds to the letter/sharp/flat fields in "spec".
+    function letterToMidiNote(spec) {
+        return letterToInterval(spec) + 48;
+    }
+
+    // Returns the number of properties in an object. E.g. for {a: 1, b: true} we return 2.
+    function countProperties(obj) {
+        var result = 0;
+        for (var i in obj) result += 1;
+        return result;
+    }
+
+    // Given an array of midi notes, return the number of notes that are above middle C
+    function numNotesAboveMiddleC(midiNotes) {
+        var result = 0;
+        for(var i in midiNotes) {
+            if (midiNotes[i] > 60) result += 1; // use c#, not c
+        }
+        return result;
+    }
 
     // Given a string representing a chord (e.g. "C#ma7b9"), returns a chord specification.
     function parseChordSymbol(symbol) {
@@ -117,7 +151,12 @@ MuseScore {
 
         } else { // default is major
             result = {1: 0, 3: 0, 5: 0};
-            seventh = (chordSpec.major || chordSpec.triangle) ? 0 : -1;
+            seventh = chordSpec.major ? 0 : -1;
+        }
+        
+        if (chordSpec.triangle) {
+            seventh = 0;
+            result[7] = seventh;
         }
 
         if (chordSpec.sixnine) {
@@ -141,8 +180,6 @@ MuseScore {
                 case "5":  delete result[3];
                            break;
             }
-        } else if (chordSpec.triangle) {
-            result[7] = seventh;
         }
 
         if (chordSpec.sus) {
@@ -166,27 +203,6 @@ MuseScore {
             }
         }
 
-        return result;
-    }
-
-    // Returns the interval above C that corresponds to the letter/sharp/flat fields in "spec"
-    function letterToInterval(spec) {
-        var letterToSemi = {C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11};
-        var result = letterToSemi[spec.letter.toUpperCase()];
-        if (spec.flat) result--;
-        if (spec.sharp) result++;
-        return result;
-    }
-
-    // Returns a midiNote in the octave below middle C that corresponds to the letter/sharp/flat fields in "spec".
-    function letterToMidiNote(spec) {
-        return letterToInterval(spec) + 48;
-    }
-
-    // Returns the number of properties in an object. E.g. for {a: 1, b: true} we return 2.
-    function countProperties(obj) {
-        var result = 0;
-        for (var i in obj) result += 1;
         return result;
     }
 
@@ -244,15 +260,6 @@ MuseScore {
         }
 
         return midiNotes;
-    }
-
-    // Given an array of midi notes, return the number of notes that are above middle C
-    function numNotesAboveMiddleC(midiNotes) {
-        var result = 0;
-        for(var i in midiNotes) {
-            if (midiNotes[i] > 60) result += 1; // use c#, not c
-        }
-        return result;
     }
 
     // Given an array of midiNotes, adjust the notes up or down by octaves, in order to find
@@ -384,7 +391,7 @@ MuseScore {
         }
     }
 
-    // Here is where it all happens. It's easy .. you find all the chords, them write them to the score.
+    // Here is where it all happens. It's easy .. you find all the chords, then write them to the score.
     onRun: {
         if (curScore) {
             writeChords(findAllChordSymbols(), curScore.ntracks - 4, false);

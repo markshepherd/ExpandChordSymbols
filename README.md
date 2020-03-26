@@ -24,9 +24,9 @@ To use the plugin:
 1. select the menu item Plugins > Expand Chord Symbols….
 1. the resulting dialog tells you which staff the plugin will write to, warns you if any existing notes will be overwritten, and lets you choose raw vs. condensed mode.
 1. click OK
-      
-
-      
-
-
+     
+Hint: to download the plugin from this web page:
+1. click on ExpandChordSymbols.qml (above)
+1. on the resulting page, find the button "Raw", just above the text
+1. right-click on the Raw button, and select Save Link As... (your browser may have different wording)
 

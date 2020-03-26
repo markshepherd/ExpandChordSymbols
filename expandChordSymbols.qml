@@ -246,7 +246,7 @@ MuseScore {
                 result[7] = seventh;
             }
         }
-        
+
         return result;
     }
 
@@ -472,25 +472,26 @@ MuseScore {
         anchors.topMargin: 10
     }
 
-    Label {
-        id: textLabel2
-        wrapMode: Text.WordWrap
-        text: ""
-        font.pointSize:12
+    CheckBox {
+        id:   writeCondensed
+        text: "Condense chords to 5 notes or less, at or below middle C"
+        checked: true
         anchors.left: window.left
         anchors.top: textLabel1.bottom
         anchors.leftMargin: 10
         anchors.topMargin: 10
     }
 
-    CheckBox {
-        id:   writeCondensed
-        text: "Condense chords to 5 notes or less, at or below middle C"
-        checked: true
+    Label {
+        id: textLabel2
+        wrapMode: Text.WordWrap
+        text: ""
+        font.pointSize:12
+        color: "red"
         anchors.left: window.left
-        anchors.top: textLabel2.bottom
+        anchors.top: writeCondensed.bottom
         anchors.leftMargin: 10
-        anchors.topMargin: 10
+        anchors.topMargin: 30
     }
 
     Button {
@@ -532,11 +533,20 @@ MuseScore {
             cursor.next();
         }
 
+        // Find out which part contains the target staff.
+        var partName = "???";
+        for (var i = 0; i < curScore.parts.length; i++) {
+            var part = curScore.parts[i];
+            if ((part.startTrack <= cursor.track) && (cursor.track <= part.endTrack)) {
+                partName = part.longName;
+            }
+        }
+
         // Update the messages in the dialog.
-        textLabel1.text = "The chords will be placed in Staff #" + (cursor.staffIdx + 1) + " \""
-            + curScore.parts[cursor.staffIdx].longName + "\".";
+        var staffName = "#" + (cursor.staffIdx + 1) + " \"" + partName + "\"";
+        textLabel1.text = "The chords will be placed in Staff " + staffName + ".";
         if (gotNotes) {
-            textLabel2.text = "Is it OK to overwrite all notes in that staff?";
+            textLabel2.text = "Is it OK to overwrite the contents of Staff " + staffName + "?";
         }
     }
 }

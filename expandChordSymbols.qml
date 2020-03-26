@@ -19,11 +19,18 @@
 // SOFTWARE.
 
 import MuseScore 3.0
+import QtQuick 2.1
+import QtQuick.Dialogs 1.0
+import QtQuick.Controls 1.0
 
 MuseScore {
     version: "0.9"
     description: "Expands chord symbols into a staff"
     menuPath: "Plugins.ExpandChordSymbols"
+    pluginType: "dialog"
+    id: window
+    width:  400;
+    height: 300;
 
     // This plugin for MuseScore 3 generates notes for chord symbols. For each chord symbol in the 
     // score, the plugin creates a corresponding set of notes in a designated target staff. Each
@@ -386,16 +393,6 @@ MuseScore {
         cursor.track = track;
         cursor.rewind(Cursor.SCORE_START);
 
-        // Find out if there are any notes in the target track.
-        var gotNotes = false;
-        while (cursor.segment) {
-            var e = cursor.element;
-            gotNotes = gotNotes || (cursor.element && (cursor.element.type == Element.CHORD));
-            cursor.next();
-        }
-        cursor.rewind(Cursor.SCORE_START);
-        console.log("gotNotes", gotNotes, "staff", curScore.parts[cursor.staffIdx].longName);
-
         // Move the cursor to the first chord. NOTE: due to limitations of the Muse API, it may not be
         // possible to position the cursor exactly at the time of the first chord. Instead, we'll look for
         // the nearest available position at or before the chord.
@@ -452,11 +449,91 @@ MuseScore {
         }
     }
 
-    // Here is where it all happens. It's easy .. we find all the chords, then write them to the score.
-    onRun: {
-        if (curScore) {
-            writeChords(findAllChordSymbols(), curScore.ntracks - 4, false);
+    // Here is where do all the work. It's easy - we find all the chords, then write them to the score.
+    function expandChordSymbols(raw) {
+        curScore.startCmd();
+        writeChords(findAllChordSymbols(), curScore.ntracks - 4, raw);
+        curScore.endCmd();
+    }
+
+    // Following is the UI of the dialog that appears when you run this plugin. 
+
+    Label {
+        id: textLabel1
+        wrapMode: Text.WordWrap
+        text: ""
+        font.pointSize:12
+        anchors.left: window.left
+        anchors.top: window.top
+        anchors.leftMargin: 10
+        anchors.topMargin: 10
+    }
+
+    Label {
+        id: textLabel2
+        wrapMode: Text.WordWrap
+        text: ""
+        font.pointSize:12
+        anchors.left: window.left
+        anchors.top: textLabel1.bottom
+        anchors.leftMargin: 10
+        anchors.topMargin: 10
+    }
+
+    CheckBox {
+        id:   writeCondensed
+        text: "Condense chords to 5 notes or less, at or below middle C"
+        checked: true
+        anchors.left: window.left
+        anchors.top: textLabel2.bottom
+        anchors.leftMargin: 10
+        anchors.topMargin: 10
+    }
+
+    Button {
+        id : buttonExpand
+        text: "OK"
+        anchors.bottom: window.bottom
+        anchors.right: window.right
+        anchors.topMargin: 10
+        anchors.bottomMargin: 10
+        anchors.rightMargin: 10
+        onClicked: {
+            expandChordSymbols(!writeCondensed.checked);
+            Qt.quit();            
         }
-        Qt.quit();        
+    }
+
+    Button {
+        id : buttonCancel
+        text: "Cancel"
+        anchors.bottom: window.bottom
+        anchors.right: buttonExpand.left
+        anchors.topMargin: 10
+        anchors.bottomMargin: 10
+        onClicked: {
+            Qt.quit();
+        }
+    }
+
+    // This code runs when the plugin is invoked, before the dialog appears. All we do is update the dialog text.
+    onRun: {
+        // Find out if there are any notes in the target track, which is the first voice of the last staff.
+        var cursor = curScore.newCursor();
+        cursor.track = curScore.ntracks - 4;
+        cursor.rewind(Cursor.SCORE_START);
+        var gotNotes = false;
+        while (cursor.segment) {
+            var e = cursor.element;
+            gotNotes = gotNotes || (cursor.element && (cursor.element.type == Element.CHORD));
+            cursor.next();
+        }
+
+        // Update the messages in the dialog.
+        textLabel1.text = "The chords will be placed in Staff #" + (cursor.staffIdx + 1) + " \""
+            + curScore.parts[cursor.staffIdx].longName + "\".";
+        if (gotNotes) {
+            textLabel2.text = "Is it OK to overwrite all notes in that staff?";
+        }
     }
 }

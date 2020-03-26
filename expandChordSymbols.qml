@@ -26,17 +26,17 @@ import QtQuick.Controls 1.0
 MuseScore {
     version: "1.0"
     description: "Expands chord symbols into a staff"
-    menuPath: "Plugins.ExpandChordSymbols"
+    menuPath: "Plugins.Expand Chord Symbols…"
     pluginType: "dialog"
     id: window
-    width:  400;
+    width:  600;
     height: 300;
 
     // This plugin for MuseScore 3 generates notes for chord symbols. For each chord symbol in the 
     // score, the plugin creates a corresponding set of notes in a designated target staff. Each
     // chord plays until the next chord. There are 2 modes:
     // - raw mode: all the notes of the chord are generated
-    // - normal mode: the chord has only the 4 most important notes plus a bass note,
+    // - condensed mode: we generate only the 4 most important notes plus a bass note,
     //   and is inverted so that most of the notes are near or below middle C.
     //   The results are almost identical to Marc Sabatella's proposed voicings at
     //   https://musescore.com/marcsabatella/chord-symbol-voicings-for-playback
@@ -60,9 +60,9 @@ MuseScore {
     // 0. findAllChordSymbols() searches all tracks of the score to produce a score chord symbol array. 
     // 1. parseChordSymbol() parse the text chord symbol, and produces a chord specification.
     // 2. expandChordSpec() uses the chord specification to create an chordMap object.
-    // 3. in normal mode, prune() reduces the number of notes in the chordMap to maximum of 4.
+    // 3. in condensed mode, prune() reduces the number of notes in the chordMap to maximum of 4.
     // 4. render() converts the chordMap to an array of real midi notes
-    // 5. in normal mode, findOptimumInversion() modifies the list of midi notes to get the optimum voicing
+    // 5. in condensed mode, findOptimumInversion() modifies the list of midi notes to get the optimum voicing
     //      e.g. [55, 58, 60, 63] = Cmin7 (notes 48 and 51 got bumped up an octave)
     // 6. [addBass] add the bass note to the chord.
     //      e.g. [48, 55, 58, 60, 63]
@@ -250,7 +250,7 @@ MuseScore {
         return result;
     }
 
-    // Deletes items from an chordMap object, to make it contain no more than maxLength notes.
+    // Deletes items from a chordMap object, to make it contain no more than maxLength notes.
     // Eliminates notes that are less important harmonically, in this order: tonic, perfect 5,
     // then secondary color notes (e.g. the 11th and 9th in a 13th chord).
     function prune(maxLength, chordMap) {
@@ -549,7 +549,7 @@ MuseScore {
 
         // Update the messages in the dialog.
         var staffName = "#" + (cursor.staffIdx + 1) + " \"" + partName + "\"";
-        textLabel1.text = "The chords will be placed in Staff " + staffName + ".";
+        textLabel1.text = "Notes for all chords in the score will be written to Staff " + staffName + ".";
         if (gotNotes) {
             textLabel2.text = "Is it OK to overwrite the contents of Staff " + staffName + "?";
         }

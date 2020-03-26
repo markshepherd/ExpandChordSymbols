@@ -227,23 +227,26 @@ MuseScore {
             result[chordSpec.susnumber || "4"] = 0;
             delete result[3];
         }
+
         if (chordSpec.add) {
             result[chordSpec.addnumber] = 0;
         }
+
         if (chordSpec.alt) {
             // "alt" is intended to be interpreted by the performer. Here we use 7#5#9 because that is a common choice.
             result[7] = -1;            
             result[5] = +1;
             result[9] = +1;
         }
+
         for(var i = 0; i < chordSpec.adjustments.length; i += 1) {
             var a = chordSpec.adjustments[i];
-            if (a.exists) {
+            if (a.text) {
                 result[a.number] = a.sharp ? 1 : -1;
                 result[7] = seventh;
             }
         }
-
+        
         return result;
     }
 

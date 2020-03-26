@@ -24,7 +24,7 @@ import QtQuick.Dialogs 1.0
 import QtQuick.Controls 1.0
 
 MuseScore {
-    version: "0.9"
+    version: "1.0"
     description: "Expands chord symbols into a staff"
     menuPath: "Plugins.ExpandChordSymbols"
     pluginType: "dialog"
@@ -38,7 +38,7 @@ MuseScore {
     // - raw mode: all the notes of the chord are generated
     // - normal mode: the chord has only the 4 most important notes plus a bass note,
     //   and is inverted so that most of the notes are near or below middle C.
-    //   The results are very similar to Marc Sabatella's proposed voicings at
+    //   The results are almost identical to Marc Sabatella's proposed voicings at
     //   https://musescore.com/marcsabatella/chord-symbol-voicings-for-playback
 
     // In the following code, we use various data structures to represent notes and chords.
@@ -90,11 +90,11 @@ MuseScore {
         return result;
     }
 
-    // Given an array of midi notes, return the number of notes that are above middle C
-    function numNotesAboveMiddleC(midiNotes) {
+    // Given an array of midi notes, return the number of notes that are above the threshold
+    function numNotesAboveThreshold(midiNotes, threshold) {
         var result = 0;
         for(var i in midiNotes) {
-            if (midiNotes[i] > 60) result += 1; // use c#, not c
+            if (midiNotes[i] > threshold) result += 1; // use c#, not c
         }
         return result;
     }
@@ -286,8 +286,8 @@ MuseScore {
         if (!chordSpec.letter) {
             var prevSpec = render.lastChordSpec || {letter: "C"};
             chordSpec.letter = prevSpec.letter;
-            chordSpec.sharp = prevSpec.prevSharp;
-            chordSpec.flat = prevSpec.prevFlat;
+            chordSpec.sharp = prevSpec.sharp;
+            chordSpec.flat = prevSpec.flat;
         }
 
         // Save the current chord in a static variable, in case we need it next time.
@@ -308,19 +308,24 @@ MuseScore {
 
     // Given an array of midiNotes, adjust the notes up or down by octaves, in order to find
     // the inversion in which exactly one note is higher than middle C.
-    function findOptimumInversion(midiNotes) {
+    function findOptimumInversion(midiNotes, chordSpec) {
         function compare(a, b) {return a - b;}
 
-        switch(numNotesAboveMiddleC(midiNotes)) {
+        // To get the best sounding inversion, we need to use a slightly different threshold,
+        // depending on the chord root. The threshold varies from middle C to Eb above middle C.
+        var root = letterToInterval(chordSpec);
+        var threshold = {0:60, 1:61, 2:62, 3:62, 4:63, 5:60, 6:62, 7:61, 8:60, 9:62, 10:62, 11:62}[root];
+
+        switch(numNotesAboveThreshold(midiNotes, threshold)) {
             case 0:
-                while(numNotesAboveMiddleC(midiNotes) < 1) {
+                while(numNotesAboveThreshold(midiNotes, threshold) < 1) {
                     midiNotes[0] += 12;
                     midiNotes.sort(compare);
                 }
             case 1:
                 return;
             default:
-                while(numNotesAboveMiddleC(midiNotes) > 1) {
+                while(numNotesAboveThreshold(midiNotes, threshold) > 1) {
                     midiNotes[midiNotes.length -1] -= 12;
                     midiNotes.sort(compare);
                 }
@@ -382,7 +387,7 @@ MuseScore {
         var chordMap = expandChordSpec(chordSpec);
         if (!raw) prune(4, chordMap);
         var midiNotes = render(chordMap, chordSpec);
-        if (!raw) findOptimumInversion(midiNotes);
+        if (!raw) findOptimumInversion(midiNotes, chordSpec);
         addBass(chordSpec, midiNotes);
         return midiNotes;
     }
@@ -459,7 +464,7 @@ MuseScore {
         curScore.endCmd();
     }
 
-    // Following is the UI of the dialog that appears when you run this plugin. 
+    // Following is the UI that appears when you run this plugin. 
 
     Label {
         id: textLabel1
@@ -474,7 +479,7 @@ MuseScore {
 
     CheckBox {
         id:   writeCondensed
-        text: "Condense chords to 5 notes or less, at or below middle C"
+        text: "Condense chords to 5 notes or less, near or below middle C"
         checked: true
         anchors.left: window.left
         anchors.top: textLabel1.bottom

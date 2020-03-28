@@ -10,6 +10,27 @@ to Marc Sabatella's recommended voicings shown [here](https://www.youtube.com/wa
 
 All generated notes are added to voice 1 of the last staff in the score. Any existing notes in that voice in that staff will be overwritten.
 
+The following chord symbol features are supported in the current version:
+Feature | Example
+------- | -------
+*letter*[b ♭ # ♯] | A, Bb, C#
+Major, major, Maj, maj, Ma, ma, M, j | Cma, DM7
+minor, min, mi, m, -, − | Dmi, D-9
+dim, o, ° | Ebdim, E°7
+ø, O, 0 | Abø7
+aug, + | Db+
+t, Δ, ∆, ^ | C∆7
+69, 6-9, 6+9, 6/9 | G6/9
+*number* | C7, E13
+(Major, major, Maj, maj, Ma, ma, M, j *number*) | Cmi(ma7)
+alt | Dalt
+sus[*number*] | Asus, Dsus2
+add*number* | Cadd4
+drop3, no3 | Fdrop3
+b*number* ... | C7b5b9
+#*number* ... | Eb7#9#11
+/ *letter*[b #] | D7/A
+
 To install the plugin:
 1. download the file ExpandChordSymbols.qml to your Plugins folder, which can be found here:
    * Windows: %HOMEPATH%\Documents\MuseScore3\Plugins

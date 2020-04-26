@@ -21,7 +21,7 @@
 import MuseScore 3.0
 import QtQuick 2.1
 import QtQuick.Dialogs 1.0
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.1
 
 MuseScore {
     version: "1.0"
@@ -215,8 +215,6 @@ MuseScore {
                 cursor.next();
             }
         }
-
-        console.log(JSON.stringify(result));
 
         return result.length > 0 ? result : null;
     }
@@ -653,7 +651,9 @@ MuseScore {
 
     CheckBox {
         id:   rhythmFromSelection
-        text: "Use the selection's rhythm pattern"
+        text: "Use the selected notes as the rhythm pattern"
+        enabled: false
+        opacity: 0.5
         checked: false
         anchors.left: window.left
         anchors.top: writeCondensed.bottom
@@ -728,6 +728,9 @@ MuseScore {
             textLabel2.text = "Warning: this will overwrite the contents of Staff " + staffName;
         }
 
-        rhythmFromSelection.visible = getSelectedRhythm() != null;
+        if (getSelectedRhythm()) {
+            rhythmFromSelection.enabled = true;
+            rhythmFromSelection.opacity = 1.0; 
+        }
     }
 }

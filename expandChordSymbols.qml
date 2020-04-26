@@ -202,7 +202,7 @@ MuseScore {
 
                             // If the note is lower than B above middle C,
                             // then this means we should only generate the bass note.
-                            if (resultNote && note.pitch < 64) {
+                            if (lowNoteMeansBass.checked && resultNote && note.pitch < 64) {
                                 resultNote.bassOnly = true;
                             }                            
                         }
@@ -659,6 +659,25 @@ MuseScore {
         anchors.top: writeCondensed.bottom
         anchors.leftMargin: 10
         anchors.topMargin: 10
+        onClicked: {
+            if (checked) {
+                lowNoteMeansBass.enabled = checked;
+                lowNoteMeansBass.opacity = checked ? 1.0 : 0.5;
+            }
+        }
+    }
+
+    CheckBox {
+        id:   lowNoteMeansBass
+        text: "Bass note only if pattern note is below treble clef"
+        enabled: false
+        opacity: 0.5
+        checked: false
+        anchors.left: window.left
+        anchors.top: rhythmFromSelection.bottom
+        anchors.leftMargin: 40
+        anchors.topMargin: 10
+
     }
 
     Label {
@@ -668,7 +687,7 @@ MuseScore {
         font.pointSize:12
         color: "red"
         anchors.left: window.left
-        anchors.top: rhythmFromSelection.bottom
+        anchors.top: lowNoteMeansBass.bottom
         anchors.leftMargin: 10
         anchors.topMargin: 30
     }

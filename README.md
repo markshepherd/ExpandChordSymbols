@@ -51,3 +51,4 @@ Hint: to download the plugin from this web page:
 1. on the resulting page, find the button "Raw", just above the text
 1. right-click on the Raw button, and select Save Link As... (your browser may have different wording)
 
+For more information, see the [MuseScore plugin page](https://musescore.org/en/project/expand-chord-symbols-notes).

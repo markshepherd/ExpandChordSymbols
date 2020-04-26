@@ -78,6 +78,15 @@ MuseScore {
         return result;
     }
 
+    // Returns a copy of the source object.
+    function shallowCopy(source) {
+        var result = {};
+        for (var i in source) {
+            result[i] = source[i];
+        }
+        return result;
+    }
+
     // Returns a midiNote in the octave below middle C that corresponds to the letter/sharp/flat fields in "spec".
     function letterToMidiNote(spec) {
         return letterToInterval(spec) + 48;
@@ -97,6 +106,119 @@ MuseScore {
             if (midiNotes[i] > threshold) result += 1; // use c#, not c
         }
         return result;
+    }
+
+    // Adds a rest to the score, using the current cursor position and duration.
+    function addRest(cursor) {
+        // Adding a rest to the score requires a little dance ...
+
+        // ... first we add a placeholder note.
+        cursor.addNote(0);
+
+        // ... go back to the note we just added
+        cursor.prev();
+
+        // ... create a new rest with the same duration as the placeholder object
+        var e = newElement(Element.REST);
+        e.durationType = cursor.element.durationType;
+        e.duration = cursor.element.duration;
+
+        // ... add the rest to the score
+        cursor.add(e);
+
+        // ... advance the cursor, because cursor.add() doesn't. (unlike cursor.addNote(), which does).
+        cursor.next();
+    }
+
+    // Removes all the notes in the given track.
+    function clearStaff(track) {
+        var cursor = curScore.newCursor();
+        cursor.track = track;
+        cursor.rewind(Cursor.SCORE_START);
+        while (cursor.segment) {
+            if (cursor.element.type === Element.CHORD) {
+                removeElement(cursor.element);
+            }
+            cursor.next();
+        }
+    }
+
+    // Returns a list of all the notes in the selection,
+    // in the form [{duration: <num>, tick: <num>, rest: <bool>, bassOnly: <bool>}, ...]
+    // "tick" is relative to the start of the selection.
+    function getSelectedRhythm() {
+        var result = [];
+
+        // locate the selection
+        var cursor = curScore.newCursor();
+        cursor.rewind(Cursor.SELECTION_START);
+
+        if (cursor.segment) {
+            // The selection exists. Remember where it begins.
+            var startTick = cursor.tick;
+
+            // We will use this variable to consolidate tied notes into a single note
+            var firstNote;
+
+            // We will only look at the first staff of the selection.
+            var staffId = cursor.staffIdx;
+
+            // Find the end of the selection
+            cursor.rewind(Cursor.SELECTION_END);
+            var endTick = (cursor.tick !== 0)
+                ? cursor.tick                    // Normal case
+                : curScore.lastSegment.tick + 1; // The selection includes the end of the last measure.
+
+            // Now go back to the beginning of the selection, and iterate over all the notes.
+            // The rewind() function sets the voice to 0, that's the only voice we will look at.
+            cursor.rewind(Cursor.SELECTION_START); 
+            cursor.staffIdx = staffId;
+            while (cursor.segment && cursor.tick < endTick) {
+                if (cursor.element) {
+                    var duration = cursor.element.duration;
+                    var durationInTicks = (division * 4) * duration.numerator / duration.denominator;
+                    var resultNote = {duration: durationInTicks, tick: cursor.tick - startTick};
+
+                    if (cursor.element.type === Element.CHORD) {
+                        // TODO: if the note is part of a triplet, adjust the numbers as required.
+
+                        // See if the current note is tied to the previous note, or the next note.
+                        if (cursor.element.notes && cursor.element.notes.length > 0) {
+                            var note = cursor.element.notes[0];
+
+                            if (note.tieForward && !note.tieBack) {
+                                // This is the first note of a tied sequence
+                                firstNote = resultNote;
+                            }
+                            if (note.tieBack && firstNote) {
+                                // This is a note of a tied sequence
+                                firstNote.duration += resultNote.duration;
+                                resultNote = null;
+                            }
+                            if (!note.tieForward) {
+                                // This note is not tied to the next note.
+                                firstNote = null;
+                            }
+
+                            // If the note is lower than B above middle C,
+                            // then this means we should only generate the bass note.
+                            if (resultNote && note.pitch < 64) {
+                                resultNote.bassOnly = true;
+                            }                            
+                        }
+                        if (resultNote) result.push (resultNote);
+                    } else if (cursor.element.type == Element.REST) {
+                        resultNote.rest = true;
+                        result.push (resultNote);
+                    }
+                }
+                cursor.next();
+            }
+        }
+
+        console.log(JSON.stringify(result));
+
+        return result.length > 0 ? result : null;
     }
 
     // Given a string representing a chord (e.g. "C#ma7b9"), returns a chord specification.
@@ -374,7 +496,9 @@ MuseScore {
             result.push(chord);
         }
         if (result.length > 0) {
-            result[result.length - 1].duration = 960; // I don't know how to find the duration of the very last chord :(
+            var scoreDuration = curScore.lastSegment.tick + 1;
+            var lastItem = result[result.length - 1];
+            lastItem.duration = scoreDuration - lastItem.tick;
         }
         return result;
     }
@@ -393,17 +517,20 @@ MuseScore {
     }
 
     // Write a bunch of chords to a given track of the current score, starting at time 0.
-    // Chords is an array of score chord symbol objects like {tick: 1234, text: "Db7", duration: 234}.
-    function writeChords(chords, track, raw) {
+    // "chords" is an array of score chord symbol objects like {tick: 1234, text: "Db7", duration: 234}.
+    // "theRhythm" is an optional array which describes the rhythm to use for each chord. 
+    // If theRhythm is not given, we generate a single chord for each chord.
+    function writeChords(chords, track, raw, theRhythm) {
         if (chords.length == 0) return;
+
+        clearStaff(track);
 
         var cursor = curScore.newCursor();
         cursor.track = track;
         cursor.rewind(Cursor.SCORE_START);
 
-        // Move the cursor to the first chord. NOTE: due to limitations of the Muse API, it may not be
-        // possible to position the cursor exactly at the time of the first chord. Instead, we'll look for
-        // the nearest available position at or before the chord.
+        // Move the cursor to the first chord. NOTE: this code doesn't always work perfectly, it fails to
+        // position the cursor exactly at the time of the first chord. I don't know why.
         while (cursor.tick <= chords[0].tick) {
             cursor.next();
         }
@@ -411,46 +538,83 @@ MuseScore {
 
         // Process each chord
         for (var i in chords) {
-            var chord = chords[i]; // the chord we're working on
+            var theChord = chords[i]; // the chord we're working on
 
             // find the notes we need to write for this chord
-            var midiNotes = chordTextToMidiNotes(chord.text, raw);
+            var midiNotes = chordTextToMidiNotes(theChord.text, raw);
 
-            // find the chord's duration. Adjust the duration if the cursor is not exactly at the desired time.
-            var duration = chord.duration + (chord.tick - cursor.tick); // in midi ticks
-            var bumpCount = 0; // see below for explanation
-
-            // If the chord's duration is long, we will write several shorter notes, rather than
-            // one long note. We will loop until the entire duration has been used up.
-            while (duration > 0) {
-                // Find out when the current measure ends. This is awkward code, do you know a better way?
-                var endOfThisMeasure = cursor.measure.nextMeasure
-                    ? cursor.measure.nextMeasure.firstSegment.tick
-                    : cursor.tick + duration;
-
-                // Set the note's duration so that the note ends no later than the end of the measure.
-                var thisDuration = Math.min(duration, endOfThisMeasure - cursor.tick);
-                duration -= thisDuration;
-                cursor.setDuration(thisDuration / 60, 32);
-
-                // Add all the midi notes to the score.
-                var beforeTick = cursor.tick; 
-                cursor.addNote(midiNotes[0]);
-                for (var j = 1; j < midiNotes.length; j += 1) {
-                    cursor.addNote(midiNotes[j], true);
+            // find the rhythm
+            var rhythm;
+            if (theRhythm && theRhythm.length > 0) {
+                // the rhythm was given to us. Make a copy of it and make the ticks
+                // be relative to the beginning of the score.
+                rhythm = [];
+                var rhythmDuration = 0;
+                for (var n = 0; n < theRhythm.length; n += 1) {
+                    var item = shallowCopy(theRhythm[n]);
+                    item.tick += theChord.tick;
+                    rhythmDuration += item.duration;
+                    rhythm.push(item);
+                    if (rhythmDuration >= theChord.duration) {
+                        rhythm[rhythm.length - 1].duration -= rhythmDuration - theChord.duration;
+                        break;
+                    }
                 }
+                if (rhythmDuration < theChord.duration) {
+                    rhythm[rhythm.length - 1].duration += theChord.duration - rhythmDuration;
+                }
+            } else {
+                // the rhythm was not provided. We'll just do one chord for the whole duration.
+                rhythm = [theChord];
+            }
 
-                // NOTE: there is a bug in cursor.addNote(), it sometimes adds a note shorter
-                // than the requested duration. The following workaround adds the missing time 
-                // back into "duration", and then continues looping.
-                var actualDuration = cursor.tick - beforeTick;
-                if ((actualDuration != thisDuration) && cursor.measure.nextMeasure) {
-                    duration += thisDuration - actualDuration;
-                    console.log("** at time", cursor.tick, "didn't get requested duration. Wanted", thisDuration,
-                        "got", actualDuration, "Bumping duration", thisDuration - actualDuration, "to", duration);
-                    if (++bumpCount > 3) {
-                        console.log("bailout!!"); // avoid an infinite loop in case this workaround goes awry
-                        duration = 0;
+            // Loop over the notes in the rhythm pattern. Generate the midiNotes for each note in the pattern.
+            for (var k = 0; k < rhythm.length; k += 1) {
+                var chord = rhythm[k];
+
+                // find the chord's duration. Adjust the duration if the cursor is not exactly at the desired time.
+                var duration = chord.duration + (chord.tick - cursor.tick); // in midi ticks
+                var bumpCount = 0; // see below for explanation
+
+                // If the chord's duration is long, we will write several shorter notes, rather than
+                // one long note. We will loop until the entire duration has been used up.
+                while (duration > 0) {
+                    // Find out when the current measure ends. This is awkward code, do you know a better way?
+                    var endOfThisMeasure = cursor.measure.nextMeasure
+                        ? cursor.measure.nextMeasure.firstSegment.tick
+                        : cursor.tick + duration;
+
+                    // Set the note's duration so that the note ends no later than the end of the measure.
+                    var thisDuration = Math.min(duration, endOfThisMeasure - cursor.tick);
+                    duration -= thisDuration;
+                    cursor.setDuration(thisDuration / 60, 32);
+
+                    // Add all the midi notes to the score.
+                    var beforeTick = cursor.tick; 
+                    if (chord.rest) {
+                        addRest(cursor);
+                    } else {
+                        cursor.addNote(midiNotes[0]);
+                        if (!chord.bassOnly) {
+                            for (var j = 1; j < midiNotes.length; j += 1) {
+                                cursor.addNote(midiNotes[j], true);
+                            }
+                        }
+                    }
+
+                    // NOTE: there is a limitation with cursor.addNote(), it sometimes adds a note shorter
+                    // than the requested duration. The following workaround adds the missing time 
+                    // back into "duration", and then continues looping.
+                    // TODO: find a way to tie all these notes together.
+                    var actualDuration = cursor.tick - beforeTick;
+                    if ((actualDuration != thisDuration) && cursor.measure.nextMeasure) {
+                        duration += thisDuration - actualDuration;
+                        console.log("** at time", cursor.tick, "didn't get requested duration. Wanted", thisDuration,
+                            "got", actualDuration, "Bumping duration", thisDuration - actualDuration, "to", duration);
+                        if (++bumpCount > 3) {
+                            console.log("bailout!!"); // avoid an infinite loop in case this workaround goes awry
+                            duration = 0;
+                        }
                     }
                 }
             }
@@ -458,9 +622,9 @@ MuseScore {
     }
 
     // Here is where do all the work. It's easy - we find all the chords, then write them to the score.
-    function expandChordSymbols(raw) {
+    function expandChordSymbols(raw, rhythmFromSelection) {
         curScore.startCmd();
-        writeChords(findAllChordSymbols(), curScore.ntracks - 4, raw);
+        writeChords(findAllChordSymbols(), curScore.ntracks - 4, raw, rhythmFromSelection && getSelectedRhythm());
         curScore.endCmd();
     }
 
@@ -487,6 +651,16 @@ MuseScore {
         anchors.topMargin: 10
     }
 
+    CheckBox {
+        id:   rhythmFromSelection
+        text: "Use the selection's rhythm pattern"
+        checked: false
+        anchors.left: window.left
+        anchors.top: writeCondensed.bottom
+        anchors.leftMargin: 10
+        anchors.topMargin: 10
+    }
+
     Label {
         id: textLabel2
         wrapMode: Text.WordWrap
@@ -494,11 +668,11 @@ MuseScore {
         font.pointSize:12
         color: "red"
         anchors.left: window.left
-        anchors.top: writeCondensed.bottom
+        anchors.top: rhythmFromSelection.bottom
         anchors.leftMargin: 10
         anchors.topMargin: 30
     }
-
+   
     Button {
         id : buttonExpand
         text: "OK"
@@ -508,7 +682,7 @@ MuseScore {
         anchors.bottomMargin: 10
         anchors.rightMargin: 10
         onClicked: {
-            expandChordSymbols(!writeCondensed.checked);
+            expandChordSymbols(!writeCondensed.checked, rhythmFromSelection.checked);
             Qt.quit();            
         }
     }
@@ -551,7 +725,9 @@ MuseScore {
         var staffName = "#" + (cursor.staffIdx + 1) + " \"" + partName + "\"";
         textLabel1.text = "Notes for all chords in the score will be written to Staff " + staffName + ".";
         if (gotNotes) {
-            textLabel2.text = "Is it OK to overwrite the contents of Staff " + staffName + "?";
+            textLabel2.text = "Warning: this will overwrite the contents of Staff " + staffName;
         }
+
+        rhythmFromSelection.visible = getSelectedRhythm() != null;
     }
 }

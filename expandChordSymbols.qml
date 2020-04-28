@@ -463,27 +463,22 @@ MuseScore {
     // Search the current score for all the chord symbols in all tracks.
     // Returns an array of score chord symbol objects like {tick: 1440, duration: 960, text: "Db7"}.
     function findAllChordSymbols() {
-        var cursor = curScore.newCursor();
         var chords = {};
-        for (var trackNumber = 0; trackNumber < cursor.score.ntracks; trackNumber += 1) {
-            cursor.track = trackNumber;        
-            cursor.rewind(Cursor.SCORE_START);
-
-            while (cursor.segment) {
-                var annotations = cursor.segment.annotations; 
-                for (var a in annotations) {
-                    var annotation = annotations[a];
-                    if (annotation.name == "Harmony") {
-                        // Save the chord for this tick. If multiple tracks have a chord at the same tick,
-                        // we will only keep the last one we find.
-                        chords[cursor.tick] = {tick: cursor.tick, text: annotation.text};
-                    }
+        var segment = curScore.firstSegment();
+        while (segment) {
+            var annotations = segment.annotations; 
+            for (var a in annotations) {
+                var annotation = annotations[a];
+                if (annotation.name == "Harmony") {
+                    // Save the chord for this tick. If multiple tracks have a chord at the same tick,
+                    // we will only keep the last one we find.
+                    chords[segment.tick] = {tick: segment.tick, text: annotation.text};
                 }
-                cursor.next();
             }
+            segment = segment.next;
         }
 
-        // Now calculate the duration of each chord (duration = start time of next chord - start time of this chord).
+        // Calculate the duration of each chord = start time of next chord - start time of this chord.
         // Also, copy all the chords to an Array, we no longer need them to be in an Object.
         var result = [];
         for (var i in chords) {
@@ -735,7 +730,7 @@ MuseScore {
         var partName = "???";
         for (var i = 0; i < curScore.parts.length; i++) {
             var part = curScore.parts[i];
-            if ((part.startTrack <= cursor.track) && (cursor.track <= part.endTrack)) {
+            if ((part.startTrack <= cursor.track) && (cursor.track < part.endTrack)) {
                 partName = part.longName;
             }
         }

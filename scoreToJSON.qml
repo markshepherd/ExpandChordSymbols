@@ -20,7 +20,7 @@
 
 import QtQuick 2.2
 import MuseScore 3.0
-import Qt.labs.platform 1.0 // FolderDialog
+import Qt.labs.platform 1.0
 import QtQuick.Controls 2.0
 
 // This MuseScore 3 plugin creates a file that contains a JSON representation of 
@@ -35,7 +35,7 @@ import QtQuick.Controls 2.0
 // Version 1 of the plugin writes most of the musical data that is available
 // via the MuseScore 3.4 plugin API. There are some things missing (like tuplets or
 // key signatures) because I could not find a way to get the information from the API,
-// (and maybe there are a few things missing because I'm too lazy).
+// And there might be a few things missing because I'm too lazy:)
 
 MuseScore {
     menuPath: "Plugins.Score To JSON…"
@@ -43,10 +43,6 @@ MuseScore {
     description: qsTr("Write a JSON representation of the musical content of a score")
     pluginType: "dialog"
     requiresScore: true
-
-    onRun: {
-        folderPicker.open();
-    }
 
     // Create a file at the given path, using the contents of "string".
     // If there is an existing file at that path it will be overwritten.
@@ -134,7 +130,7 @@ MuseScore {
         return result;
     }
 
-    // "getScoreResult" returns a JSON-compatible data structure representing the score and
+    // "getScoreResult()" returns a JSON-compatible data structure representing the score and
     // all its associated data structures.
     //
     // MuseScore's data structures are interesting because there are various ways to traverse them.
@@ -142,19 +138,25 @@ MuseScore {
     // You can iterate over measures to get segments, or you can iterate the segments directly.
     // You can iterate over tracks, then measures, or you can do measures then tracks.
     // You can use a Cursor object to iterate, or you can follow the links from a score.
-    // And so on. I don't think there is one "best" method, each probably has a purpose.
+    // And so on. I don't think there is one "best" method, they all work.
     //
-    // Anyway, here is how we are going to do it here...
+    // Here is how this plugin views down a score:
+    //
+    //   A score contains staffs, which contain voices, which contain measures,
+    //   which contain segments, which contain Rest elements and Chord elements,
+    //   which contain notes, which contain lyrics. In addition a score contains
+    //   annotations which are not part of any staff, and measure-related information
+    //   which is not part of any staff.
     //
     //  Score
     //      Staff
     //          Voice
     //              Measure
     //                  Segment
-    //                      Element
-    //                          Chord
-    //                              Note
+    //                      Chord
+    //                          Note
     //                              Lyric
+    //                      Rest
     //
     //      Annotations
     //          annotation data that doesn't belong to any Staff
@@ -235,17 +237,30 @@ MuseScore {
         writeFile(path, resultString);
     }
 
+    onRun: {
+        folderPicker.open();
+        Qt.quit();
+    }
+
     ApplicationWindow {
+        MessageDialog {
+            id: messageDialog
+            visible: false
+            modality: Qt.WindowModal
+            title: "Done!"
+            text: "xxx"
+        }
+
         FolderDialog {
             id: folderPicker
-            acceptLabel: "OK"
+            acceptLabel: "Write Score"
             onAccepted: {
-                writeScoreToJSON(curScore, folder.toString() + "/" + curScore.scoreName + ".json");
-                Qt.quit();
-            }
-            onRejected: {
+                var path = folder.toString() + "/" + curScore.scoreName + ".json";
+                writeScoreToJSON(curScore, path);
+                messageDialog.text = "File '" + path + "' has been written.";
+                messageDialog.open();
                 Qt.quit()
-            } 
+            }
         }
     }
 }

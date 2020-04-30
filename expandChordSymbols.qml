@@ -713,6 +713,17 @@ MuseScore {
         }
     }
 
+    Label {
+        id: versionLabel
+        wrapMode: Text.WordWrap
+        text: "Expand Chord Symbols, Version 2"
+        font.pointSize:9
+        anchors.left: window.left
+        anchors.bottom: window.bottom
+        anchors.leftMargin: 10
+        anchors.bottomMargin: 10
+    }
+
     // This code runs when the plugin is invoked, before the dialog appears. All we do is update the dialog text.
     onRun: {
         // Find out if there are any notes in the target track, which is the first voice of the last staff.

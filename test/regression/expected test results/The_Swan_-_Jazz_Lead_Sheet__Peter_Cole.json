@@ -3444,19 +3444,16 @@
                                         ],
                                         "notes": [
                                             {
-                                                "pitch": 41
+                                                "pitch": 44
                                             },
                                             {
-                                                "pitch": 53
+                                                "pitch": 57
                                             },
                                             {
-                                                "pitch": 56
+                                                "pitch": 60
                                             },
                                             {
-                                                "pitch": 59
-                                            },
-                                            {
-                                                "pitch": 62
+                                                "pitch": 65
                                             }
                                         ]
                                     }
@@ -3491,10 +3488,10 @@
                                                 "pitch": 53
                                             },
                                             {
-                                                "pitch": 55
+                                                "pitch": 58
                                             },
                                             {
-                                                "pitch": 58
+                                                "pitch": 60
                                             },
                                             {
                                                 "pitch": 62
@@ -4025,7 +4022,10 @@
                                         ],
                                         "notes": [
                                             {
-                                                "pitch": 50
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 54
                                             },
                                             {
                                                 "pitch": 57
@@ -4034,10 +4034,7 @@
                                                 "pitch": 60
                                             },
                                             {
-                                                "pitch": 62
-                                            },
-                                            {
-                                                "pitch": 66
+                                                "pitch": 67
                                             }
                                         ]
                                     }
@@ -4364,13 +4361,10 @@
                                                 "pitch": 55
                                             },
                                             {
-                                                "pitch": 58
+                                                "pitch": 59
                                             },
                                             {
-                                                "pitch": 61
-                                            },
-                                            {
-                                                "pitch": 64
+                                                "pitch": 62
                                             }
                                         ]
                                     }

@@ -39,7 +39,7 @@ import QtQuick.Controls 2.0
 // And there might be a few things missing because I'm too lazy:)
 
 MuseScore {
-    menuPath: "Plugins.Score To JSON…"
+    menuPath: "Plugins.Scores To JSON…"
     version:  "1.0"
     description: qsTr("Write a JSON representation of the musical content of all open scores")
     pluginType: "dialog"

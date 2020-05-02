@@ -219,67 +219,146 @@ MuseScore {
         return result.length > 0 ? result : null;
     }
 
+    function frontStuff() {
+        return ["^",
+            "([A-Ga-g])",
+            "([#♯])?",
+            "([b♭])?",
+            "(?:",
+                "(Major|major|Maj|maj|Ma|ma|M|j)|",
+                "(minor|min|mi|m|-|−)|",
+                "(dim|o|°)|",
+                "(ø|O|0)|",
+                "(aug|\\+)|",
+                "([tΔ∆\\^])",
+            ")?",
+            "([0-9]+)?"
+        ].join("");
+    }
+
+    function middleStuff() {
+        return [
+            "(?:",
+                "(69|6-9|6\\+9|6\\/9)|",
+                "(?:(?:Major|major|Maj|maj|Ma|ma|M|j)([0-9]+))|",
+                "(alt)|",
+                "(sus([0-9])?)|",
+                "(?:add([0-9]+))|",
+                "(?:(?:drop|no)([0-9]+))|",
+                "([0-9]+)|",
+                "(?:([#♯])?([b♭])?([0-9]+))|",
+            ")"
+        ].join("");
+    }
+
+    function backStuff() {
+        return "(?:\\/([A-G])([#♯])?([b♭])?)";
+    }
+
+    function doNum(result, token, inMiddle) {
+        if (token === "69") {
+            result.sixnine = true;
+        } else if (inMiddle) {
+            result.add.push(token);
+        } else {
+            result.number = token;
+        }
+    }
+
+    function parseMiddleStuff(result, symbol) {
+        var regex = RegExp(middleStuff(),'g');
+        var charsConsumed;
+        while (true) {
+            var tokens = regex.exec(symbol);
+            if (!tokens || !tokens[0] || tokens.index >= symbol.length || regex.lastIndex === 0) break;
+            charsConsumed = regex.lastIndex;
+            if (tokens[1]) result.sixnine = true;
+            if (tokens[2]) result.majoralt = tokens[2];
+            if (tokens[3]) result.alt = true;
+            if (tokens[4]) result.sus.push(tokens[5] || "4");
+            if (tokens[6]) result.add.push(tokens[6]);
+            if (tokens[7]) result.drop.push(tokens[7]);
+            if (tokens[8]) doNum(result, tokens[8], true);
+            if (tokens[11]) result.alter.push({sharp: tokens[9], flat: tokens[10], number: tokens[11]});
+        }
+
+        return {result: result, symbol: symbol.substring(charsConsumed)};
+    }
+
+    function parseBackStuff(result, symbol) {
+        var regex = RegExp(backStuff(),'g');
+        var tokens = regex.exec(symbol);
+        if (tokens && tokens[1]) {
+            result.bass = {letter: tokens[1], sharp: tokens[2] || undefined, flat: tokens[3] || undefined};
+        }
+        return {result: result, symbol: regex.lastIndex ? symbol.substring(regex.lastIndex) : ""};
+    }
+
     // Given a string representing a chord (e.g. "C#ma7b9"), returns a chord specification.
     function parseChordSymbol(symbol) {
-        // Use a regex to split the chord symbol into an array of tokens.
-        var tokens = symbol.match(
-        /^([A-Ga-g])?([#♯])?([b♭])?(Major|major|Maj|maj|Ma|ma|M|j)?(minor|min|mi|m|-|−)?(dim|o|°)?(ø|O|0)?(aug|\+)?([tΔ∆\^])?(69|6-9|6\+9|6\/9)?([0-9]+)?(\((Major|major|Maj|maj|Ma|ma|M|j)([0-9]+)\))?(alt)?(sus([0-9])?)?(add([0-9]+))?(drop3|no3)?(([#♯])?([b♭])?([0-9]+))?(([#♯])?([b♭])?([0-9]+))?(([#♯])?([b♭])?([0-9]+))?(\/([A-G])([#♯])?([b♭])?)?/
-        );
+        var fullSymbol = symbol;
 
-        // Assign each token to the appropriate field of a chord specification object.
-        // If a token is empty, the field is simply undefined.
-        var i = 1;
-        var result = {
-            letter:      tokens[i++],
-            sharp:       tokens[i++],
-            flat:        tokens[i++],
-            major:       tokens[i++],
-            minor:       tokens[i++],
-            diminished:  tokens[i++],
-            halfdim:     tokens[i++],
-            augmented:   tokens[i++],
-            triangle:    tokens[i++],
-            sixnine:     tokens[i++],
-            number:      tokens[i++],
-            majoralttext:tokens[i++],
-            majoralt:    tokens[i++],
-            majoraltnum: tokens[i++],
-            alt:         tokens[i++],
-            sus:         tokens[i++],
-            susnumber:   tokens[i++],
-            add:         tokens[i++],
-            addnumber:   tokens[i++],
-            nothree:     tokens[i++],
-            adjustments: [
-                {
-                    text:   tokens[i++],
-                    sharp:  tokens[i++],
-                    flat:   tokens[i++],
-                    number: tokens[i++]
-                },
-                {
-                    text:   tokens[i++],
-                    sharp:  tokens[i++],
-                    flat:   tokens[i++],
-                    number: tokens[i++]
-                },
-                {
-                    text:   tokens[i++],
-                    sharp:  tokens[i++],
-                    flat:   tokens[i++],
-                    number: tokens[i++]
-                }
-            ],
-            bass: {
-                text:   tokens[i++],
-                letter: tokens[i++],
-                sharp:  tokens[i++],
-                flat:   tokens[i++]
+        tokens = symbol.match(/^\((.*)\)$/);
+        if (tokens) {
+            symbol = tokens[1];
+        }
+
+        var extras = [];
+        while (true) {
+            tokens = symbol.match(/\((.*?)\)/);
+            if (!tokens) break;
+            extras.push(tokens[1]);
+            symbol = symbol.replace(/\((.*?)\)/, "");
+        }
+
+        var result = {sus: [], add: [], drop: [], alter: []};
+
+        // Do the front stuff
+        var regex = RegExp(frontStuff(), "g");
+        var tokens = regex.exec(symbol);
+        if (tokens) {
+            if (tokens[1]) result.letter = tokens[1];
+            if (tokens[2]) result.sharp = true;
+            if (tokens[3]) result.flat = true;
+            if (tokens[4]) result.major = true;
+            if (tokens[5]) result.minor = true;
+            if (tokens[6]) result.diminished = true;
+            if (tokens[7]) result.halfdim = true;
+            if (tokens[8]) result.augmented = true;
+            if (tokens[9]) result.triangle = true;
+            if (tokens[10]) doNum(result, tokens[10], false);
+
+            // trim the front stuff off the symbol
+            symbol = symbol.substring(regex.lastIndex);
+        }
+
+        // do the middle stuff
+        var temp = parseMiddleStuff(result, symbol);
+        result = temp.result;
+        symbol = temp.symbol;
+
+        // do the back stuff
+        if (symbol.length > 0) {
+            temp = parseBackStuff(result, symbol);
+            result = temp.result;
+            symbol = temp.symbol;
+            if (symbol.length > 0) {
+                console.log("warning: we didn't fully parse the chord symbol", fullSymbol);
             }
-        };
+        }
+
+        // do the extras
+        for (var i = 0; i < extras.length; i += 1) {
+            temp = parseMiddleStuff(result, extras[i]);
+            result = temp.result;
+            if (temp.symbol.length !== 0) {
+                console.log("warning: we didn't fully parse the chord symbol", fullSymbol);
+            }
+        }        
 
         // Uncomment the following line to see what the chord specification looks like.
         // console.log(symbol, JSON.stringify(result));
+
         return result;
     }
 
@@ -320,13 +399,14 @@ MuseScore {
             result[9] = 0;
         }
 
-        if (chordSpec.nothree) {
-            delete result[3];
+        var i;
+        for (i = 0; i < chordSpec.drop.length; i += 1) {
+            delete result[parseInt(chordSpec.drop[i])];
         }
 
-        if (chordSpec.majoraltnum) {
+        if (chordSpec.majoralt) {
             seventh = 0;
-            chordSpec.number = chordSpec.majoraltnum;
+            chordSpec.number = chordSpec.majoralt;
         }
 
         if (chordSpec.number) {
@@ -343,13 +423,13 @@ MuseScore {
             }
         }
 
-        if (chordSpec.sus) {
-            result[chordSpec.susnumber || "4"] = 0;
+        for (i = 0; i < chordSpec.sus.length; i += 1) {
+            result[parseInt(chordSpec.sus[i])] = 0;
             delete result[3];
         }
 
-        if (chordSpec.add) {
-            result[chordSpec.addnumber] = 0;
+        for (i = 0; i < chordSpec.add.length; i += 1) {
+            result[parseInt(chordSpec.add[i])] = 0;
         }
 
         if (chordSpec.alt) {
@@ -359,12 +439,9 @@ MuseScore {
             result[9] = +1;
         }
 
-        for(var i = 0; i < chordSpec.adjustments.length; i += 1) {
-            var a = chordSpec.adjustments[i];
-            if (a.text) {
-                result[a.number] = a.sharp ? 1 : -1;
-                result[7] = seventh;
-            }
+        for(var i = 0; i < chordSpec.alter.length; i += 1) {
+            var a = chordSpec.alter[i];
+            result[parseInt(a.number)] = a.sharp ? 1 : -1;
         }
 
         return result;
@@ -455,7 +532,7 @@ MuseScore {
 
     // To an array of midi notes, add the bass note defined by the chord specification.
     function addBass(chordSpec, midiNotes) {
-        var bassNote = letterToMidiNote(chordSpec.bass.letter ? chordSpec.bass : chordSpec);
+        var bassNote = letterToMidiNote(chordSpec.bass || chordSpec);
         if (bassNote >= 52) bassNote -= 12; // Maybe adjust the octave. We can go as low as E below the bass clef.
         if (bassNote != midiNotes[0]) midiNotes.unshift(bassNote);
     }

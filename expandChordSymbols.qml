@@ -21,7 +21,8 @@
 import MuseScore 3.0
 import QtQuick 2.1
 import QtQuick.Dialogs 1.0
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.1
 
 MuseScore {
     version: "1.0"
@@ -30,7 +31,16 @@ MuseScore {
     pluginType: "dialog"
     id: window
     width:  600;
-    height: 300;
+    height: 450;
+    property var thePattern: [];
+
+    // bass, nonbass, all, rest
+    function incrementVoicing(voicing) {
+        if (voicing === "bass") return "nonbass";
+        if (voicing === "nonbass") return "all";
+        if (voicing === "all") return "rest";
+        return "bass";
+    }    
 
     // This plugin for MuseScore 3 generates notes for chord symbols. For each chord symbol in the 
     // score, the plugin creates a corresponding set of notes in a designated target staff. Each
@@ -704,16 +714,17 @@ MuseScore {
         id: textLabel1
         wrapMode: Text.WordWrap
         text: ""
-        font.pointSize:12
+        font.pointSize:15
         anchors.left: window.left
         anchors.top: window.top
         anchors.leftMargin: 10
-        anchors.topMargin: 10
+        anchors.topMargin: 15
     }
 
     CheckBox {
         id:   writeCondensed
-        text: "Condense chords to 5 notes or less, near or below middle C"
+        text: "Condense chords to 5 notes or less"
+        font.pointSize:15
         checked: true
         anchors.left: window.left
         anchors.top: textLabel1.bottom
@@ -722,35 +733,256 @@ MuseScore {
     }
 
     CheckBox {
-        id:   rhythmFromSelection
-        text: "Use the selected notes as the rhythm pattern"
-        enabled: false
-        opacity: 0.5
+        id:   useRhythmPattern
+        text: "Use a rhythm pattern"
+        font.pointSize:15
+        enabled: true
         checked: false
         anchors.left: window.left
         anchors.top: writeCondensed.bottom
         anchors.leftMargin: 10
-        anchors.topMargin: 10
         onClicked: {
-            if (checked) {
-                lowNoteMeansBass.enabled = checked;
-                lowNoteMeansBass.opacity = checked ? 1.0 : 0.5;
+            // enable the rhythm pattern UI
+            addButtons.enabled = checked
+            addButtons.opacity = checked ? 1.0 : 0.3
+            patternBackground.enabled = checked
+            patternBackground.opacity = checked ? 1.0 : 0.3
+            patternView.enabled = checked
+            patternView.opacity = checked ? 1.0 : 0.3
+            buttonClear.enabled = checked
+            buttonClear.opacity = checked ? 1.0 : 0.3
+            patternRestartControl.enabled = checked
+            patternRestartControl.opacity = checked ? 1.0 : 0.3
+            addButtonsLabel.opacity = checked ? 1.0 : 0.3
+        }
+    }
+
+    // ------------ Start of the rhythm pattern UI ------------
+
+    Text {
+        id: addButtonsLabel
+        opacity: 0.3
+        text: "Click to add notes to the rhythm pattern"
+        font.pointSize:12
+        anchors.topMargin: 0 
+        anchors.horizontalCenter: addButtonBackground.horizontalCenter
+        anchors.top: useRhythmPattern.bottom
+    }
+
+    Rectangle {
+        id: addButtonBackground
+        height: 65
+        enabled: false
+        opacity: 0.3
+        width: 330
+        anchors.horizontalCenter: window.horizontalCenter
+        anchors.top: addButtonsLabel.bottom
+        anchors.topMargin: 6
+        color: "transparent"
+        border.color: "black"
+        border.width: 2
+    }
+
+    RowLayout {
+        id: addButtons
+        spacing: 20
+        enabled: false
+        opacity: 0.3
+        anchors.left: addButtonBackground.left
+        anchors.top: addButtonBackground.top
+        anchors.leftMargin: 20
+        anchors.topMargin: 12
+    }
+
+    Button {
+        id : buttonClear
+        text: "Clear"
+        enabled: false
+        opacity: 0.3
+        font.pointSize:15
+        anchors.verticalCenter: addButtonBackground.verticalCenter
+        anchors.right: window.right
+        anchors.rightMargin: 20
+        onClicked: {
+            clearPattern();        
+        }
+    }
+
+    Rectangle {
+        id: patternBackground
+        height: 100
+        enabled: false
+        opacity: 0.3
+        anchors.left: window.left
+        anchors.right: window.right
+        anchors.top: addButtonBackground.bottom
+        anchors.leftMargin: 10
+        anchors.rightMargin: 10
+        anchors.topMargin: 10
+        color: "white"
+        border.color: "black"
+        border.width: 2
+    }
+
+    RowLayout {
+        id: patternView
+        spacing: 10
+        enabled: false
+        opacity: 0.3
+        anchors.left: patternBackground.left
+        anchors.top: patternBackground.top
+        anchors.leftMargin: 20
+        anchors.topMargin: 8
+    }
+
+    Text {
+        id: label3
+        opacity: patternView.children.length > 0 ? 1.0 : 0.3
+        text: "Click on the chords to change voicing"
+        font.pointSize:12
+        anchors.horizontalCenter: patternBackground.horizontalCenter
+        anchors.top: patternBackground.bottom
+        anchors.topMargin: 5
+    }
+
+    ColumnLayout {
+        id: patternRestartControl
+        anchors.left: window.left
+        anchors.top: label3.bottom
+        anchors.leftMargin: 0
+        anchors.topMargin: 0
+        enabled: false
+        opacity: 0.3
+        spacing: -5
+
+        RadioButton {
+            id: restartPatternForEverySymbol
+            checked: true
+            text: qsTr("Restart pattern for every chord symbol")
+        }
+        RadioButton {
+            id: useEntirePattern
+            text: qsTr("Use entire pattern before restarting it")
+        }
+    }
+
+    Component {
+        id: imageButton
+    
+        Image {
+            id: image
+            opacity: 0.6
+            signal clicked(string ref, string source)
+            property var ref
+
+            MouseArea {
+                ToolTip.delay: 1000
+                ToolTip.timeout: 5000
+                ToolTip.visible: containsMouse
+                ToolTip.text: qsTr("Click to add this note to the pattern")
+                cursorShape: Qt.PointingHandCursor                
+                anchors.fill: parent
+                hoverEnabled: true
+                onEntered: {
+                    if (patternView.children.length < 16) {
+                        parent.opacity = 1.0;
+                    }
+                }
+                onExited: {
+                    parent.opacity = 0.6;
+                }
+                onClicked: {
+                    if (patternView.children.length < 16) {
+                        image.clicked(image.ref, image.source);
+                    }
+                }
             }
         }
     }
 
-    CheckBox {
-        id:   lowNoteMeansBass
-        text: "Bass note only if pattern note is below treble clef"
-        enabled: false
-        opacity: 0.5
-        checked: false
-        anchors.left: window.left
-        anchors.top: rhythmFromSelection.bottom
-        anchors.leftMargin: 40
-        anchors.topMargin: 10
+    Component {
+        id: noteStack
 
+        Item {
+            id: item
+            property string source
+            property var ref
+            signal clicked(var ref, string source)
+            width: 25
+            height: 88
+            opacity: ref.voicing === "rest" ? (mouseArea.containsMouse ? 0.4 : 0.2) : (mouseArea.containsMouse ? 1.0 : 0.6)
+
+            MouseArea {
+                id: mouseArea
+                ToolTip.delay: 1000
+                ToolTip.timeout: 5000
+                ToolTip.visible: containsMouse
+                ToolTip.text: qsTr("Click to change the chord's voicing")
+                cursorShape: Qt.PointingHandCursor                
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: {
+                    parent.clicked(item.ref, item.source);
+                }
+            }
+
+            Image {
+                visible: ref.voicing !== "bass"
+                y: 0
+                source: parent.source
+            }
+
+            Image {
+                visible: ref.voicing !== "bass"
+                y: 12
+                source: parent.source.replace(/eighth/, "quarter")
+            }
+
+            Image {
+                visible: ref.voicing !== "bass"
+                y: 24
+                source: parent.source.replace(/eighth/, "quarter")
+            }
+
+            Image {
+                visible: ref.voicing !== "nonbass"
+                y: 45
+                source: ref.voicing === "bass" ? parent.source : parent.source.replace(/eighth/, "quarter")
+            }
+        }   
     }
+
+    function clearPattern() {
+        thePattern = [];
+        patternView.children = [];
+    }
+
+    function changeVoicing(sequenceItem, source) {
+        sequenceItem.voicing = incrementVoicing(sequenceItem.voicing);
+        patternView.children[sequenceItem.index].ref = sequenceItem;
+    }
+
+    function addToPattern(duration, source) {
+        var sequenceItem = {index: thePattern.length, duration: duration, source: source, voicing: "all"};
+        thePattern.push(sequenceItem);        
+        noteStack.createObject(patternView, {ref: sequenceItem, source: source}).clicked.connect(changeVoicing);
+    }
+
+    function dt(numerator, denominator) {
+        return (division * 4) * numerator / denominator;
+    }
+
+    function setupRhythmPatternUI() {
+        imageButton.createObject(addButtons, {ref: dt(1, 8), source: "images/eighth.png"}).clicked.connect(addToPattern);
+        imageButton.createObject(addButtons, {ref: dt(3, 16), source: "images/eighth dotted.png"}).clicked.connect(addToPattern);
+        imageButton.createObject(addButtons, {ref: dt(1, 4), source: "images/quarter.png"}).clicked.connect(addToPattern);
+        imageButton.createObject(addButtons, {ref: dt(3, 8), source: "images/quarter dotted.png"}).clicked.connect(addToPattern);
+        imageButton.createObject(addButtons, {ref: dt(1, 2), source: "images/half.png"}).clicked.connect(addToPattern);
+        imageButton.createObject(addButtons, {ref: dt(3, 4), source: "images/half dotted.png"}).clicked.connect(addToPattern);
+        imageButton.createObject(addButtons, {ref: dt(1, 1), source: "images/whole.png"}).clicked.connect(addToPattern);
+    }
+
+    // ------------ End of the rhythm pattern UI ------------
 
     Label {
         id: textLabel2
@@ -759,11 +991,10 @@ MuseScore {
         font.pointSize:12
         color: "red"
         anchors.left: window.left
-        anchors.top: lowNoteMeansBass.bottom
+        anchors.bottom: buttonExpand.top
         anchors.leftMargin: 10
-        anchors.topMargin: 30
     }
-   
+
     Button {
         id : buttonExpand
         text: "OK"
@@ -773,7 +1004,7 @@ MuseScore {
         anchors.bottomMargin: 10
         anchors.rightMargin: 10
         onClicked: {
-            expandChordSymbols(!writeCondensed.checked, rhythmFromSelection.checked);
+            expandChordSymbols(!writeCondensed.checked, false /*rhythmFromSelection.checked*/);
             Qt.quit();            
         }
     }
@@ -810,7 +1041,8 @@ MuseScore {
         var gotNotes = false;
         while (cursor.segment) {
             var e = cursor.element;
-            gotNotes = gotNotes || (cursor.element && (cursor.element.type == Element.CHORD));
+            gotNotes = cursor.element && (cursor.element.type == Element.CHORD);
+            if (gotNotes) break;
             cursor.next();
         }
 
@@ -825,14 +1057,11 @@ MuseScore {
 
         // Update the messages in the dialog.
         var staffName = "#" + (cursor.staffIdx + 1) + " \"" + partName + "\"";
-        textLabel1.text = "Notes for all chords in the score will be written to Staff " + staffName + ".";
+        textLabel1.text = "Expanding chords into Staff " + staffName + ".";
         if (gotNotes) {
             textLabel2.text = "Warning: this will overwrite the contents of Staff " + staffName;
         }
 
-        if (getSelectedRhythm()) {
-            rhythmFromSelection.enabled = true;
-            rhythmFromSelection.opacity = 1.0; 
-        }
+        setupRhythmPatternUI();
     }
 }

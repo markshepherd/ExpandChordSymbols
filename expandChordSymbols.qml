@@ -31,15 +31,16 @@ MuseScore {
     pluginType: "dialog"
     id: window
     width:  600;
-    height: 450;
+    height: 500;
     property var thePattern: [];
+    property var ticksPerQuarter;
 
-    // bass, nonbass, all, rest
+    // all, bass, nonbass, rest
     function incrementVoicing(voicing) {
+        if (voicing === "all") return "bass";
         if (voicing === "bass") return "nonbass";
-        if (voicing === "nonbass") return "all";
-        if (voicing === "all") return "rest";
-        return "bass";
+        if (voicing === "nonbass") return "rest";
+        return "all";
     }    
 
     // This plugin for MuseScore 3 generates notes for chord symbols. For each chord symbol in the 
@@ -209,12 +210,6 @@ MuseScore {
                                 // This note is not tied to the next note.
                                 firstNote = null;
                             }
-
-                            // If the note is lower than B above middle C,
-                            // then this means we should only generate the bass note.
-                            if (lowNoteMeansBass.checked && resultNote && note.pitch < 64) {
-                                resultNote.bassOnly = true;
-                            }                            
                         }
                         if (resultNote) result.push (resultNote);
                     } else if (cursor.element.type == Element.REST) {
@@ -671,13 +666,18 @@ MuseScore {
 
                     // Add all the midi notes to the score.
                     var beforeTick = cursor.tick; 
-                    if (chord.rest) {
+                    if (chord.voicing === "rest") {
                         addRest(cursor);
                     } else {
-                        cursor.addNote(midiNotes[0]);
-                        if (!chord.bassOnly) {
+                        var gotNote = false;
+                        if (chord.voicing !== "nonbass") {
+                            cursor.addNote(midiNotes[0], gotNote);
+                            gotNote = true;
+                        }
+                        if (chord.voicing !== "bass") {
                             for (var j = 1; j < midiNotes.length; j += 1) {
-                                cursor.addNote(midiNotes[j], true);
+                                cursor.addNote(midiNotes[j], gotNote);
+                                gotNote = true;
                             }
                         }
                     }
@@ -701,10 +701,37 @@ MuseScore {
         }
     }
 
+    function fetchSavedPattern() {
+        var savedPattern;
+        try {
+            savedPattern = JSON.parse(curScore.metaTag("chordrhythmpattern"));
+            if (!Array.isArray(savedPattern)) {
+                savedPattern = [];
+            }
+        } catch (e) {
+            savedPattern = [];
+        }
+
+        return savedPattern.length > 0 ? savedPattern : null;
+    }
+
+    function savePattern (pattern) {
+        var trimmed = [];
+        for (var i = 0; i < pattern.length; i += 1) {
+            var item = pattern[i];
+            trimmed.push({duration: item.duration, voicing: item.voicing});
+        }
+        curScore.setMetaTag("chordrhythmpattern", JSON.stringify(trimmed));
+    }
+
     // Here is where do all the work. It's easy - we find all the chords, then write them to the score.
-    function expandChordSymbols(raw, rhythmFromSelection) {
+    function expandChordSymbols() {
+        var raw = !writeCondensed.checked;
+        var pattern = (useRhythmPattern.checked && thePattern.length > 0) ? thePattern : null;
+
         curScore.startCmd();
-        writeChords(findAllChordSymbols(), curScore.ntracks - 4, raw, rhythmFromSelection && getSelectedRhythm());
+        if (pattern) savePattern(pattern);
+        writeChords(findAllChordSymbols(), curScore.ntracks - 4, raw, pattern);
         curScore.endCmd();
     }
 
@@ -741,27 +768,14 @@ MuseScore {
         anchors.left: window.left
         anchors.top: writeCondensed.bottom
         anchors.leftMargin: 10
-        onClicked: {
-            // enable the rhythm pattern UI
-            addButtons.enabled = checked
-            addButtons.opacity = checked ? 1.0 : 0.3
-            patternBackground.enabled = checked
-            patternBackground.opacity = checked ? 1.0 : 0.3
-            patternView.enabled = checked
-            patternView.opacity = checked ? 1.0 : 0.3
-            buttonClear.enabled = checked
-            buttonClear.opacity = checked ? 1.0 : 0.3
-            patternRestartControl.enabled = checked
-            patternRestartControl.opacity = checked ? 1.0 : 0.3
-            addButtonsLabel.opacity = checked ? 1.0 : 0.3
-        }
     }
 
     // ------------ Start of the rhythm pattern UI ------------
 
     Text {
         id: addButtonsLabel
-        opacity: 0.3
+        enabled: useRhythmPattern.checked
+        opacity: useRhythmPattern.checked ? 1.0 : 0.3
         text: "Click to add notes to the rhythm pattern"
         font.pointSize:12
         anchors.topMargin: 0 
@@ -772,8 +786,8 @@ MuseScore {
     Rectangle {
         id: addButtonBackground
         height: 65
-        enabled: false
-        opacity: 0.3
+        enabled: useRhythmPattern.checked
+        opacity: useRhythmPattern.checked ? 1.0 : 0.3
         width: 330
         anchors.horizontalCenter: window.horizontalCenter
         anchors.top: addButtonsLabel.bottom
@@ -786,8 +800,8 @@ MuseScore {
     RowLayout {
         id: addButtons
         spacing: 20
-        enabled: false
-        opacity: 0.3
+        enabled: useRhythmPattern.checked
+        opacity: useRhythmPattern.checked ? 1.0 : 0.3
         anchors.left: addButtonBackground.left
         anchors.top: addButtonBackground.top
         anchors.leftMargin: 20
@@ -797,12 +811,12 @@ MuseScore {
     Button {
         id : buttonClear
         text: "Clear"
-        enabled: false
-        opacity: 0.3
+        enabled: useRhythmPattern.checked
+        opacity: useRhythmPattern.checked ? 1.0 : 0.3
         font.pointSize:15
         anchors.verticalCenter: addButtonBackground.verticalCenter
-        anchors.right: window.right
-        anchors.rightMargin: 20
+        anchors.left: window.left
+        anchors.leftMargin: 20
         onClicked: {
             clearPattern();        
         }
@@ -811,8 +825,8 @@ MuseScore {
     Rectangle {
         id: patternBackground
         height: 100
-        enabled: false
-        opacity: 0.3
+        enabled: useRhythmPattern.checked
+        opacity: useRhythmPattern.checked ? 1.0 : 0.3
         anchors.left: window.left
         anchors.right: window.right
         anchors.top: addButtonBackground.bottom
@@ -827,8 +841,8 @@ MuseScore {
     RowLayout {
         id: patternView
         spacing: 10
-        enabled: false
-        opacity: 0.3
+        enabled: useRhythmPattern.checked
+        opacity: useRhythmPattern.checked ? 1.0 : 0.3
         anchors.left: patternBackground.left
         anchors.top: patternBackground.top
         anchors.leftMargin: 20
@@ -837,7 +851,8 @@ MuseScore {
 
     Text {
         id: label3
-        opacity: patternView.children.length > 0 ? 1.0 : 0.3
+        enabled: useRhythmPattern.checked
+        opacity: useRhythmPattern.checked && patternView.children.length > 0 ? 1.0 : 0.3
         text: "Click on the chords to change voicing"
         font.pointSize:12
         anchors.horizontalCenter: patternBackground.horizontalCenter
@@ -851,8 +866,8 @@ MuseScore {
         anchors.top: label3.bottom
         anchors.leftMargin: 0
         anchors.topMargin: 0
-        enabled: false
-        opacity: 0.3
+        enabled: useRhythmPattern.checked
+        opacity: useRhythmPattern.checked ? 1.0 : 0.3
         spacing: -5
 
         RadioButton {
@@ -867,13 +882,14 @@ MuseScore {
     }
 
     Component {
-        id: imageButton
+        id: addNoteButton
     
         Image {
             id: image
             opacity: 0.6
-            signal clicked(string ref, string source)
-            property var ref
+            signal clicked(int duration)
+            property int duration
+            source: durationToSource(duration)
 
             MouseArea {
                 ToolTip.delay: 1000
@@ -893,7 +909,7 @@ MuseScore {
                 }
                 onClicked: {
                     if (patternView.children.length < 16) {
-                        image.clicked(image.ref, image.source);
+                        image.clicked(image.duration);
                     }
                 }
             }
@@ -905,12 +921,12 @@ MuseScore {
 
         Item {
             id: item
-            property string source
+            property string source: durationToSource(ref.duration)
             property var ref
-            signal clicked(var ref, string source)
+            signal clicked(var ref)
             width: 25
             height: 88
-            opacity: ref.voicing === "rest" ? (mouseArea.containsMouse ? 0.4 : 0.2) : (mouseArea.containsMouse ? 1.0 : 0.6)
+            opacity: mouseArea.containsMouse ? 1.0 : 0.6
 
             MouseArea {
                 id: mouseArea
@@ -922,32 +938,38 @@ MuseScore {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: {
-                    parent.clicked(item.ref, item.source);
+                    parent.clicked(item.ref);
                 }
             }
 
             Image {
-                visible: ref.voicing !== "bass"
+                visible: ref.voicing !== "bass" && ref.voicing !== "rest"
                 y: 0
                 source: parent.source
             }
 
             Image {
-                visible: ref.voicing !== "bass"
+                visible: ref.voicing !== "bass" && ref.voicing !== "rest"
                 y: 12
                 source: parent.source.replace(/eighth/, "quarter")
             }
 
             Image {
-                visible: ref.voicing !== "bass"
+                visible: ref.voicing !== "bass" && ref.voicing !== "rest"
                 y: 24
                 source: parent.source.replace(/eighth/, "quarter")
             }
 
             Image {
-                visible: ref.voicing !== "nonbass"
+                visible: ref.voicing !== "nonbass" && ref.voicing !== "rest"
                 y: 45
                 source: ref.voicing === "bass" ? parent.source : parent.source.replace(/eighth/, "quarter")
+            }
+
+            Image {
+                visible: ref.voicing === "rest"
+                y: 24
+                source: parent.source.replace(/\./, " rest.")
             }
         }   
     }
@@ -957,29 +979,66 @@ MuseScore {
         patternView.children = [];
     }
 
-    function changeVoicing(sequenceItem, source) {
+    function changeVoicing(sequenceItem) {
         sequenceItem.voicing = incrementVoicing(sequenceItem.voicing);
         patternView.children[sequenceItem.index].ref = sequenceItem;
     }
 
-    function addToPattern(duration, source) {
-        var sequenceItem = {index: thePattern.length, duration: duration, source: source, voicing: "all"};
+    function addToPattern(duration, voicing) {
+        var tick = thePattern.length > 0 
+            ? thePattern[thePattern.length - 1].tick + thePattern[thePattern.length - 1].duration
+            : 0;
+        var sequenceItem = {index: thePattern.length, tick: tick, duration: duration, voicing: voicing || "all"};
         thePattern.push(sequenceItem);        
-        noteStack.createObject(patternView, {ref: sequenceItem, source: source}).clicked.connect(changeVoicing);
+        noteStack.createObject(patternView, {ref: sequenceItem}).clicked.connect(changeVoicing);
     }
 
     function dt(numerator, denominator) {
-        return (division * 4) * numerator / denominator;
+        return (ticksPerQuarter * 4) * numerator / denominator;
+    }
+
+    function durationToSource(duration) {
+        if (duration === dt(1, 8)) return "images/eighth.png";
+        if (duration === dt(3, 16)) return "images/eighth dotted.png";
+        if (duration === dt(1, 4)) return "images/quarter.png";
+        if (duration === dt(3, 8)) return "images/quarter dotted.png";
+        if (duration === dt(1, 2)) return "images/half.png";
+        if (duration === dt(3, 4)) return "images/half dotted.png";
+        if (duration === dt(1, 1)) return "images/whole.png";
+
+        return "images/unknown.png";
+    }
+
+    function createAddButton(duration) {
+        addNoteButton.createObject(addButtons, {duration: duration}).clicked.connect(addToPattern);
     }
 
     function setupRhythmPatternUI() {
-        imageButton.createObject(addButtons, {ref: dt(1, 8), source: "images/eighth.png"}).clicked.connect(addToPattern);
-        imageButton.createObject(addButtons, {ref: dt(3, 16), source: "images/eighth dotted.png"}).clicked.connect(addToPattern);
-        imageButton.createObject(addButtons, {ref: dt(1, 4), source: "images/quarter.png"}).clicked.connect(addToPattern);
-        imageButton.createObject(addButtons, {ref: dt(3, 8), source: "images/quarter dotted.png"}).clicked.connect(addToPattern);
-        imageButton.createObject(addButtons, {ref: dt(1, 2), source: "images/half.png"}).clicked.connect(addToPattern);
-        imageButton.createObject(addButtons, {ref: dt(3, 4), source: "images/half dotted.png"}).clicked.connect(addToPattern);
-        imageButton.createObject(addButtons, {ref: dt(1, 1), source: "images/whole.png"}).clicked.connect(addToPattern);
+        createAddButton(dt(1, 8));
+        createAddButton(dt(3, 16));
+        createAddButton(dt(1, 4));
+        createAddButton(dt(3, 8));
+        createAddButton(dt(1, 2));
+        createAddButton(dt(3, 4));
+        createAddButton(dt(1, 1));
+
+        var selectedRhythm = getSelectedRhythm();
+        if (selectedRhythm) {
+            for (var i = 0; i < selectedRhythm.length; i += 1) {
+                var duration = selectedRhythm[i].duration;
+                var rest = selectedRhythm[i].rest;
+
+                addToPattern(duration, rest ? "rest" : "all");
+            }
+        } else {
+            var savedPattern = fetchSavedPattern();
+            if (savedPattern) {
+                for (var i = 0; i < savedPattern.length; i += 1) {
+                    var item = savedPattern[i];
+                    addToPattern(item.duration, item.voicing);
+                }
+            }
+        }
     }
 
     // ------------ End of the rhythm pattern UI ------------
@@ -1004,7 +1063,7 @@ MuseScore {
         anchors.bottomMargin: 10
         anchors.rightMargin: 10
         onClicked: {
-            expandChordSymbols(!writeCondensed.checked, false /*rhythmFromSelection.checked*/);
+            expandChordSymbols();
             Qt.quit();            
         }
     }
@@ -1034,6 +1093,8 @@ MuseScore {
 
     // This code runs when the plugin is invoked, before the dialog appears. All we do is update the dialog text.
     onRun: {
+        ticksPerQuarter = division; // take our own copy of "division" to avoid runtime warnings
+
         // Find out if there are any notes in the target track, which is the first voice of the last staff.
         var cursor = curScore.newCursor();
         cursor.track = curScore.ntracks - 4;

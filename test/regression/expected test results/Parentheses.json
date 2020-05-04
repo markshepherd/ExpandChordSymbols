@@ -1,0 +1,1956 @@
+{
+    "composer": "",
+    "name": "Parentheses",
+    "staves": {
+        "Staff 1": {
+            "name": "Piano",
+            "voices": {
+                "Staff 1, Voice 1": {
+                    "measures": {
+                        "Staff 1, Voice 1, Measure 1": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "TimeSig",
+                                    "element": {
+                                        "name": "TimeSig"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 1920,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 2": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 1920,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 3840,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 3": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 3840,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 5760,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 4": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 5760,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 5": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 6": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 11520,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 7": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 11520,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 13440,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 8": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 13440,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 9": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 17280,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 10": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 17280,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 19200,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 11": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 19200,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 12": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 23040,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 13": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 23040,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 24960,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 14": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 24960,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 26880,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 15": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 26880,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 28800,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 16": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 28800,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 30720,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 17": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 30720,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 30720,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 30720,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 32640,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 18": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 32640,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 34560,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 19": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 34560,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 36480,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 20": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 36480,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 38400,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 21": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 38400,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 40320,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 22": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 40320,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 40320,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 40320,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 42240,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 23": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 42240,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 44160,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 24": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 44160,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 46080,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "Staff 2": {
+            "name": "Chords",
+            "voices": {
+                "Staff 2, Voice 1": {
+                    "measures": {
+                        "Staff 2, Voice 1, Measure 1": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "TimeSig",
+                                    "element": {
+                                        "name": "TimeSig"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 63
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 1920,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 2": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 1920,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 63
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 3840,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 3": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 3840,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 50
+                                            },
+                                            {
+                                                "pitch": 54
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 5760,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 4": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 5760,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 5": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 51
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 68
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 6": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 61
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 11520,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 7": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 11520,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 47
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 63
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 13440,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 8": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 13440,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 44
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 56
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 63
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 9": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 47
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 54
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 63
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 17280,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 10": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 17280,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 45
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 61
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 19200,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 11": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 19200,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 45
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 61
+                                            },
+                                            {
+                                                "pitch": 62
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 12": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 41
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 63
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 23040,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 13": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 23040,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 54
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 63
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 24960,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 14": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 24960,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 67
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 26880,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 15": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 26880,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 28800,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 16": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 28800,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 30720,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 17": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 30720,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 30720,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 30720,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 54
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 66
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 32640,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 18": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 32640,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 69
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 34560,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 19": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 34560,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 61
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 36480,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 20": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 36480,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 38400,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 21": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 38400,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 40320,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 22": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 40320,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 40320,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 40320,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 41
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 61
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 42240,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 23": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 42240,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 51
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 61
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 44160,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 24": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 44160,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            1
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 46080,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "title": "Parentheses",
+    "annotations": [
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "(Cmin)"
+                }
+            ],
+            "tick": 0
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Cmin(maj7)"
+                }
+            ],
+            "tick": 1920
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "D7(9)(13)"
+                }
+            ],
+            "tick": 3840
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Gm7(11)"
+                }
+            ],
+            "tick": 5760
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Eb(11)"
+                }
+            ],
+            "tick": 7680
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "B(7)#9b9no5"
+                }
+            ],
+            "tick": 9600
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "B7(#9b9no5)"
+                }
+            ],
+            "tick": 11520
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Ab(7) #9#11"
+                }
+            ],
+            "tick": 13440
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "B7(#11)"
+                }
+            ],
+            "tick": 15360
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "A(#9)"
+                }
+            ],
+            "tick": 17280
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "A7(11)"
+                }
+            ],
+            "tick": 19200
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "F7(9)"
+                }
+            ],
+            "tick": 21120
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Cmi7(b5)"
+                }
+            ],
+            "tick": 23040
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "C2(no3)"
+                }
+            ],
+            "tick": 24960
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "C(4)"
+                }
+            ],
+            "tick": 26880
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "C(add4)"
+                }
+            ],
+            "tick": 28800
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "C7(#11b5)"
+                }
+            ],
+            "tick": 30720
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "C7(add13)"
+                }
+            ],
+            "tick": 32640
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "C(b9)"
+                }
+            ],
+            "tick": 34560
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "C(sus)"
+                }
+            ],
+            "tick": 36480
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "C(sus2)"
+                }
+            ],
+            "tick": 38400
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "F^7(b13)"
+                }
+            ],
+            "tick": 40320
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Eb7(b9#11)"
+                }
+            ],
+            "tick": 42240
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Cmaj13(#11)"
+                }
+            ],
+            "tick": 44160
+        }
+    ],
+    "measures": {}
+}

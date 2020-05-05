@@ -171,13 +171,13 @@ MuseScore {
         spacing: -5
 
         RadioButton {
-            id: restartPatternForEverySymbol
+            id: useEntirePattern
             checked: true
-            text: qsTr("Restart pattern for every chord symbol")
+            text: qsTr("Repeat pattern over entire score")
         }
         RadioButton {
-            id: useEntirePattern
-            text: qsTr("Use entire pattern before restarting it")
+            id: restartPatternForEverySymbol
+            text: qsTr("Restart pattern for every chord symbol")
         }
     }
 
@@ -296,7 +296,8 @@ MuseScore {
         onClicked: {
             var raw = !writeCondensed.checked;
             var pattern = (useRhythmPattern.checked && thePattern.length > 0) ? thePattern : null;
-            ChordAssistant.expandChordSymbols(raw, pattern);
+            ChordAssistant.expandChordSymbols(pattern, 
+                {raw: raw, useEntirePattern: useEntirePattern.checked});
             Qt.quit();            
         }
     }

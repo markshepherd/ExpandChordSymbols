@@ -129,8 +129,8 @@ function clearStaff(track) {
     }
 }
 
-// Returns a list of all the notes in the selection,
-// in the form [{duration: <num>, tick: <num>, rest: <bool>, bassOnly: <bool>}, ...]
+// Returns a list of all the notes in the current score's selection,
+// in the form [{duration: <num>, tick: <num>, rest: <bool>}, ...]
 // "tick" is relative to the start of the selection.
 function getSelectedRhythm() {
     var result = [];
@@ -199,6 +199,8 @@ function getSelectedRhythm() {
     return result.length > 0 ? result : null;
 }
 
+// A regular expression that matches the "front" part of a chord symbol. These items -
+// the chord root, the triad type, and the number - can only occur once.
 function frontStuff() {
     return ["^",
         "([A-Ga-g])",
@@ -216,6 +218,8 @@ function frontStuff() {
     ].join("");
 }
 
+// A regular expression that matches the "middle" part of a chord symbol. These items -
+// added, suspended, dropped, and altered notes - can occur multiple times within a symbol.
 function middleStuff() {
     return [
         "(?:",
@@ -231,10 +235,13 @@ function middleStuff() {
     ].join("");
 }
 
+// A regular expression that matches the "back" part of a chord symbol.
+// This is only the optional bass note.
 function backStuff() {
     return "(?:\\/([A-G])([#♯])?([b♭])?)";
 }
 
+// Determine the exact meaning of a number in a chord symbol, which depends on context. 
 function doNum(result, token, inMiddle) {
     if (token === "69") {
         result.sixnine = true;
@@ -245,12 +252,19 @@ function doNum(result, token, inMiddle) {
     }
 }
 
+// Parse the middle section of a chord symbol, and add the information into "result". 
+// "symbol" is the original chord symbol with the front stuff removed.
 function parseMiddleStuff(result, symbol) {
     var regex = RegExp(middleStuff(),'g');
     var charsConsumed;
     while (true) {
+        // regex.exec will find the next matching item.
         var tokens = regex.exec(symbol);
+
+        // if nothing found, then we're done
         if (!tokens || !tokens[0] || tokens.index >= symbol.length || regex.lastIndex === 0) break;
+
+        // Examine the match results and update result accordingly.
         charsConsumed = regex.lastIndex;
         if (tokens[1]) result.sixnine = true;
         if (tokens[2]) result.majoralt = tokens[2];
@@ -265,6 +279,8 @@ function parseMiddleStuff(result, symbol) {
     return {result: result, symbol: symbol.substring(charsConsumed)};
 }
 
+// Parse the back section of a chord symbol, and add the information into "result". 
+// "symbol" is the original chord symbol with the front and middle stuff removed.
 function parseBackStuff(result, symbol) {
     var regex = RegExp(backStuff(),'g');
     var tokens = regex.exec(symbol);
@@ -278,11 +294,15 @@ function parseBackStuff(result, symbol) {
 function parseChordSymbol(symbol) {
     var fullSymbol = symbol;
 
+    // If the entire symbol is enclosed in parentheses, we simply remove the parentheses.
     tokens = symbol.match(/^\((.*)\)$/);
     if (tokens) {
         symbol = tokens[1];
     }
 
+    // If the chord symbol contains 1 or more substrings enclosed in parentheses,
+    // remove those strings from the symbol and save them in the "extras" array.
+    // We will deal with these in a moment.
     var extras = [];
     while (true) {
         tokens = symbol.match(/\((.*?)\)/);
@@ -327,7 +347,7 @@ function parseChordSymbol(symbol) {
         }
     }
 
-    // do the extras
+    // do the extras. Each extra contains "middle stuff".
     for (var i = 0; i < extras.length; i += 1) {
         temp = parseMiddleStuff(result, extras[i]);
         result = temp.result;
@@ -566,19 +586,22 @@ function chordTextToMidiNotes(text, raw) {
     return midiNotes;
 }
 
+// Given a rhythm pattern that is being repeated over the entire score,
+// create a slice of the pattern that corresponds to a given start time and duration.
+// The slice may span multiple iterations of the pattern.
 function sliceOfRhythmPattern(pattern, startTick, duration) {
-    // console.log("------------------sliceOfRhythmPattern",
-    //     JSON.stringify({pattern: pattern, tick: startTick, duration: duration}, undefined, 4));
-    var needToFill = duration;
+    var needToFill = duration; // how much time we need to fill
     var prevItem = null;
-    var ticksFilled = 0;
+    var ticksFilled = 0; // how much time we've filled so far
+
+    // The duration of the pattern, in ticks. We use "reduce" to add together the duration
+    // of all the items in the pattern.
     var patternDuration = pattern.reduce(function(acc,item) {return acc + item.duration;}, 0);
-    var posInPattern = startTick % patternDuration;
+    var posInPattern = startTick % patternDuration; // where in the pattern we start at
     var item;
     var result = [];
-    // console.log("patternDuration", patternDuration);
-    function asdf(item, overshoot) {
-        // console.log("sadf");
+
+    function addOneResultItem(item, overshoot) {
         var useDuration = Math.min(needToFill, item.duration - overshoot);
         result.push({tick: ticksFilled + startTick, voicing: item.voicing, duration: useDuration});
         posInPattern += useDuration;
@@ -593,23 +616,19 @@ function sliceOfRhythmPattern(pattern, startTick, duration) {
         if (++k > 10) break;
         item = pattern[i % pattern.length];
         var itemTick = item.tick + (Math.floor(i / pattern.length) * patternDuration);
-        // console.log(JSON.stringify(
-        //     {i: i, needToFill: needToFill, posInPattern: posInPattern, ticksFilled: ticksFilled,
-        //     item: item, prevItem: prevItem, itemTick: itemTick}, undefined, 4));
 
         if (itemTick < posInPattern) {
             prevItem = item;
             i += 1;
 
         } else if (itemTick === posInPattern) {
-            asdf(item, 0);
+            addOneResultItem(item, 0);
             i += 1;
 
         } else if (itemTick > posInPattern) {
-            asdf(prevItem, posInPattern - prevItem.tick);
+            addOneResultItem(prevItem, posInPattern - prevItem.tick);
         }
     }
-    // console.log("slice", JSON.stringify(result, undefined, 4));
     return result;
 }
 
@@ -646,6 +665,9 @@ function writeChords(chords, track, theRhythm, options) {
             // the rhythm was given to us. 
 
             if (options.useEntirePattern) {
+                // In this mode, we keep repeating the rhythm pattern over and over again
+                // for the entire score. Right now, find the slice of the pattern
+                // that corresponds to the current chord's start time and duration.
                 rhythm = sliceOfRhythmPattern(theRhythm, theChord.tick, theChord.duration);
 
             } else {

@@ -18,18 +18,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// This file contains the UI for the Chord Assistant plugin.
-// All the functional code is in the file ChordAssistant.js.
+// This file contains the UI for the Expand Chord Symbols plugin.
+// All the functional code and documentation is in ExpandChordSymbols.js.
 
 import MuseScore 3.0
 import QtQuick 2.1
 import QtQuick.Dialogs 1.0
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.1
-import "ChordAssistant.js" as ChordAssistant
+import "ExpandChordSymbols.js" as ExpandChordSymbols
 
 MuseScore {
-    version: "1.0"
+    version: "3.0"
     description: "Expands chord symbols into a staff"
     menuPath: "Plugins.Expand Chord Symbols…"
     pluginType: "dialog"
@@ -38,6 +38,7 @@ MuseScore {
     height: 500;
     property var thePattern: [];
     property var ticksPerQuarter;
+    property var selectedRhythm;
 
     Label {
         id: textLabel1
@@ -109,14 +110,35 @@ MuseScore {
     }
 
     Button {
+        id : buttonUseSelection
+        text: "Use selection"
+        enabled: !!selectedRhythm && useRhythmPattern.checked
+        opacity: !!selectedRhythm && useRhythmPattern.checked ? 1.0 : 0.7
+        font.pointSize:15
+        anchors.top: addButtonBackground.top
+        anchors.left: window.left
+        anchors.leftMargin: 15
+        onClicked: {
+            clearPattern();
+            for (var i = 0; i < selectedRhythm.length; i += 1) {
+                var duration = selectedRhythm[i].duration;
+                var rest = selectedRhythm[i].rest;
+
+                addToPattern(duration, rest ? "rest" : "all");
+            }
+        }
+    }
+
+    Button {
         id : buttonClear
         text: "Clear"
         enabled: useRhythmPattern.checked
-        opacity: useRhythmPattern.checked ? 1.0 : 0.3
+        opacity: useRhythmPattern.checked ? 1.0 : 0.7
         font.pointSize:15
-        anchors.verticalCenter: addButtonBackground.verticalCenter
+        anchors.top: buttonUseSelection.bottom
         anchors.left: window.left
         anchors.leftMargin: 20
+        anchors.topMargin: -10
         onClicked: {
             clearPattern();        
         }
@@ -181,6 +203,7 @@ MuseScore {
         }
     }
 
+    // Every "Add Note" button is an instance of this component
     Component {
         id: addNoteButton
     
@@ -216,6 +239,7 @@ MuseScore {
         }
     }
 
+    // Every item in the rhythm pattern is an instance of this component
     Component {
         id: noteStack
 
@@ -251,13 +275,13 @@ MuseScore {
             Image {
                 visible: ref.voicing !== "bass" && ref.voicing !== "rest"
                 y: 12
-                source: parent.source.replace(/eighth/, "quarter")
+                source: parent.source.replace(/eighth/, "quarter") // to hide the eighth note's flag
             }
 
             Image {
                 visible: ref.voicing !== "bass" && ref.voicing !== "rest"
                 y: 24
-                source: parent.source.replace(/eighth/, "quarter")
+                source: parent.source.replace(/eighth/, "quarter") // to hide the eighth note's flag
             }
 
             Image {
@@ -296,7 +320,7 @@ MuseScore {
         onClicked: {
             var raw = !writeCondensed.checked;
             var pattern = (useRhythmPattern.checked && thePattern.length > 0) ? thePattern : null;
-            ChordAssistant.expandChordSymbols(pattern, 
+            ExpandChordSymbols.expandChordSymbols(pattern, 
                 {raw: raw, useEntirePattern: useEntirePattern.checked});
             Qt.quit();            
         }
@@ -317,7 +341,7 @@ MuseScore {
     Label {
         id: versionLabel
         wrapMode: Text.WordWrap
-        text: "Expand Chord Symbols, Version 2"
+        text: "Expand Chord Symbols, Version " + version.split(/\./)[0];
         font.pointSize:9
         anchors.left: window.left
         anchors.bottom: window.bottom
@@ -325,7 +349,7 @@ MuseScore {
         anchors.bottomMargin: 10
     }
 
-    // all, bass, nonbass, rest
+    // Advance to the next voicing option: all -> bass -> nonbass -> rest -> all
     function incrementVoicing(voicing) {
         if (voicing === "all") return "bass";
         if (voicing === "bass") return "nonbass";
@@ -333,16 +357,20 @@ MuseScore {
         return "all";
     }
 
+    // Remove all notes from the rhythm pattern
     function clearPattern() {
         thePattern = [];
         patternView.children = [];
     }
 
+    // Change the voicing of a chord in the rhythm pattern. Each click advances to the 
+    // next voicing value
     function changeVoicing(sequenceItem) {
         sequenceItem.voicing = incrementVoicing(sequenceItem.voicing);
         patternView.children[sequenceItem.index].ref = sequenceItem;
     }
 
+    // Adds a note to the rhythm pattern
     function addToPattern(duration, voicing) {
         var tick = thePattern.length > 0 
             ? thePattern[thePattern.length - 1].tick + thePattern[thePattern.length - 1].duration
@@ -352,10 +380,12 @@ MuseScore {
         noteStack.createObject(patternView, {ref: sequenceItem}).clicked.connect(changeVoicing);
     }
 
+    // Given a fraction duration such as 1/4 or 3/8, return the corresponding number of ticks.
     function calcDuration(numerator, denominator) {
         return (ticksPerQuarter * 4) * numerator / denominator;
     }
 
+    // Fetch the filepath to the image that corresponds to the given duration, which is in ticks.
     function durationToSource(duration) {
         if (duration === calcDuration(1, 8)) return "images/eighth.png";
         if (duration === calcDuration(3, 16)) return "images/eighth dotted.png";
@@ -372,6 +402,7 @@ MuseScore {
         addNoteButton.createObject(addButtons, {duration: duration}).clicked.connect(addToPattern);
     }
 
+    // Initialize all the UI items relating to Rhythm Patterns
     function setupRhythmPatternUI() {
         createAddButton(calcDuration(1, 8));
         createAddButton(calcDuration(3, 16));
@@ -381,25 +412,21 @@ MuseScore {
         createAddButton(calcDuration(3, 4));
         createAddButton(calcDuration(1, 1));
 
-        var selectedRhythm = ChordAssistant.getSelectedRhythm();
-        if (selectedRhythm) {
-            for (var i = 0; i < selectedRhythm.length; i += 1) {
-                var duration = selectedRhythm[i].duration;
-                var rest = selectedRhythm[i].rest;
+        // Fetch the pattern in the current score selection, just in case the user wants it.
+        selectedRhythm = ExpandChordSymbols.getSelectedRhythm();
 
-                addToPattern(duration, rest ? "rest" : "all");
-            }
-        } else {
-            var savedPattern = fetchSavedPattern();
-            if (savedPattern) {
-                for (var i = 0; i < savedPattern.length; i += 1) {
-                    var item = savedPattern[i];
-                    addToPattern(item.duration, item.voicing);
-                }
+        // Initialize the rhythm pattern to the last pattern used in this score.
+        // If the user doesn't want this, she can simply clear it.
+        var savedPattern = fetchSavedPattern();
+        if (savedPattern) {
+            for (var i = 0; i < savedPattern.length; i += 1) {
+                var item = savedPattern[i];
+                addToPattern(item.duration, item.voicing);
             }
         }
     }
 
+    // Retrieve a pattern from Score Properties.chordrhythmpattern
     function fetchSavedPattern() {
         var savedPattern;
         try {
@@ -414,6 +441,7 @@ MuseScore {
         return savedPattern.length > 0 ? savedPattern : null;
     }
 
+    // Save a pattern to Score Properties.chordrhythmpattern
     function savePattern (pattern) {
         var trimmed = [];
         for (var i = 0; i < pattern.length; i += 1) {
@@ -423,7 +451,8 @@ MuseScore {
         curScore.setMetaTag("chordrhythmpattern", JSON.stringify(trimmed));
     }
 
-    // This code runs when the plugin is invoked, before the dialog appears. All we do is update the dialog text.
+    // This code runs when the plugin is invoked, before the dialog appears.
+    // We initialize various items in the UI.
     onRun: {
         ticksPerQuarter = division; // take our own copy of "division" to avoid runtime warnings
 

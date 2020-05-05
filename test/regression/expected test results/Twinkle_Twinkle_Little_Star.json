@@ -1,0 +1,2719 @@
+{
+    "composer": "",
+    "name": "Twinkle_Twinkle_Little_Star",
+    "staves": {
+        "Staff 1": {
+            "name": "Classical Guitar",
+            "voices": {
+                "Staff 1, Voice 1": {
+                    "measures": {
+                        "Staff 1, Voice 1, Measure 1": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "KeySig",
+                                    "element": {
+                                        "name": "KeySig"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "TimeSig",
+                                    "element": {
+                                        "name": "TimeSig"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 60
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 480,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 60
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 960,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 62
+                                            },
+                                            {
+                                                "pitch": 67
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 1440,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 67
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 1920,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 2": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 1920,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            },
+                                            {
+                                                "pitch": 69
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 2400,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 69
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 2640,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 53,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 57,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 64,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 67,
+                                                "tieForward": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 2880,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            3,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 53,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 57,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 64,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 67,
+                                                "tieBack": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 3600,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 3840,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 3": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 3840,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 50
+                                            },
+                                            {
+                                                "pitch": 56
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 4320,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 4800,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 5280,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 5760,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 4": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 5760,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 6240,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 6480,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 55,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 59,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 64,
+                                                "tieForward": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 6720,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 55,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 59,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 64,
+                                                "tieBack": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 5": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "KeySig",
+                                    "element": {
+                                        "name": "KeySig"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 45
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 67
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 8160,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 67
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 8640,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 50
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 9120,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 6": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 10080,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 10320,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 52,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 59,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 62,
+                                                "tieForward": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 10560,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 52,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 59,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 62,
+                                                "tieBack": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 11520,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 7": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 11520,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 45
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 67
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 12000,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 67
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 12480,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 50
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 12960,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 13440,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 8": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 13440,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 13920,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 14160,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 52,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 59,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 62,
+                                                "tieForward": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 14400,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 52,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 59,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 62,
+                                                "tieBack": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 9": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "KeySig",
+                                    "element": {
+                                        "name": "KeySig"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 60
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15840,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 60
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 16320,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 62
+                                            },
+                                            {
+                                                "pitch": 67
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 16800,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 67
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 17280,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 10": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 17280,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            },
+                                            {
+                                                "pitch": 69
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 17760,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 69
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 18000,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 53,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 57,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 64,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 67,
+                                                "tieForward": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 18240,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            3,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 53,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 57,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 64,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 67,
+                                                "tieBack": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 18960,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Rest",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 19200,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 11": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 19200,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 50
+                                            },
+                                            {
+                                                "pitch": 56
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 19680,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 20160,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 20640,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 1, Voice 1, Measure 12": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            4
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 21600,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 21840,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 52,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 55,
+                                                "tieForward": true
+                                            },
+                                            {
+                                                "pitch": 60,
+                                                "tieForward": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 22080,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 52,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 55,
+                                                "tieBack": true
+                                            },
+                                            {
+                                                "pitch": 60,
+                                                "tieBack": true
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 23040,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "Staff 2": {
+            "name": "Chords",
+            "voices": {
+                "Staff 2, Voice 1": {
+                    "measures": {
+                        "Staff 2, Voice 1, Measure 1": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "KeySig",
+                                    "element": {
+                                        "name": "KeySig"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "TimeSig",
+                                    "element": {
+                                        "name": "TimeSig"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 0,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 960,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 1920,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 2": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 1920,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            3,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 41
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 2640,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 41
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 3600,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 41
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 3840,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 3": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 3840,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 50
+                                            },
+                                            {
+                                                "pitch": 56
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 62
+                                            },
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 4800,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 5760,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 4": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 5760,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            3,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 6480,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 7440,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 5": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "KeySig",
+                                    "element": {
+                                        "name": "KeySig"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 7680,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 45
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 8640,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 50
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 6": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 9600,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            3,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 10320,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 11280,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 11520,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 7": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 11520,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 45
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 12480,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 50
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 13440,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 8": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 13440,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            3,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 14160,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15120,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 9": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "BeginBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "HeaderClef",
+                                    "element": {
+                                        "name": "Clef"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "KeySig",
+                                    "element": {
+                                        "name": "KeySig"
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 15360,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 16320,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 58
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 17280,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 10": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 17280,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            3,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 41
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 18000,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 41
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 18960,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            8
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 41
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 19200,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 11": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 19200,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 50
+                                            },
+                                            {
+                                                "pitch": 56
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 62
+                                            },
+                                            {
+                                                "pitch": 65
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 20160,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 43
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        },
+                        "Staff 2, Voice 1, Measure 12": {
+                            "segments": [
+                                {
+                                    "name": "Segment",
+                                    "tick": 21120,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 52
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 59
+                                            },
+                                            {
+                                                "pitch": 62
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 22080,
+                                    "type": "ChordRest",
+                                    "element": {
+                                        "name": "Chord",
+                                        "duration": [
+                                            1,
+                                            2
+                                        ],
+                                        "notes": [
+                                            {
+                                                "pitch": 48
+                                            },
+                                            {
+                                                "pitch": 55
+                                            },
+                                            {
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 64
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Segment",
+                                    "tick": 23040,
+                                    "type": "EndBarLine",
+                                    "element": {
+                                        "name": "BarLine"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "title": "Twinkle Twinkle Little Star",
+    "annotations": [
+        {
+            "annotations": [
+                {
+                    "name": "Tempo"
+                },
+                {
+                    "name": "Harmony",
+                    "text": "Gm11"
+                }
+            ],
+            "tick": 0
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "C9"
+                }
+            ],
+            "tick": 960
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Fmaj7"
+                }
+            ],
+            "tick": 1920
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Fmaj9"
+                }
+            ],
+            "tick": 2640
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Dmin7b5"
+                }
+            ],
+            "tick": 3840
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "G13"
+                }
+            ],
+            "tick": 4800
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Cmaj9"
+                }
+            ],
+            "tick": 5760
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Cmaj7"
+                }
+            ],
+            "tick": 6480
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Amin7"
+                }
+            ],
+            "tick": 7680
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Dmin(#9)"
+                }
+            ],
+            "tick": 8640
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "G13"
+                }
+            ],
+            "tick": 9600
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Cmaj9"
+                }
+            ],
+            "tick": 10320
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Amin7"
+                }
+            ],
+            "tick": 11520
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Dmin(#9)"
+                }
+            ],
+            "tick": 12480
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "G13"
+                }
+            ],
+            "tick": 13440
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Cmaj9"
+                }
+            ],
+            "tick": 14160
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Gm11"
+                }
+            ],
+            "tick": 15360
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "C9"
+                }
+            ],
+            "tick": 16320
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Fmaj7"
+                }
+            ],
+            "tick": 17280
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Fmaj9"
+                }
+            ],
+            "tick": 18000
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Dmin7b5"
+                }
+            ],
+            "tick": 19200
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "G13"
+                }
+            ],
+            "tick": 20160
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Cmaj9"
+                }
+            ],
+            "tick": 21120
+        },
+        {
+            "annotations": [
+                {
+                    "name": "Harmony",
+                    "text": "Cmaj"
+                }
+            ],
+            "tick": 22080
+        }
+    ],
+    "measures": {
+        "4": {
+            "elements": [
+                {
+                    "name": "LayoutBreak"
+                }
+            ]
+        },
+        "8": {
+            "elements": [
+                {
+                    "name": "LayoutBreak"
+                }
+            ]
+        },
+        "12": {
+            "elements": [
+                {
+                    "name": "LayoutBreak"
+                }
+            ]
+        }
+    }
+}

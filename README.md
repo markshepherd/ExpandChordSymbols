@@ -44,6 +44,7 @@ To install the plugin:
    * Windows: %HOMEPATH%\Documents\MuseScore3\Plugins
    * Mac: ~/Documents/MuseScore3/Plugins
    * Linux: ~/Documents/MuseScore3/Plugins
+1. make sure to remove any old versions of ExpandChordSymbols from the Plugins folder
 1. launch MuseScore3
 1. select the menu item Plugins > Plugin Manager...
 1. in the resulting dialog, enable expandChordSymbol

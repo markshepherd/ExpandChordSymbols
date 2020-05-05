@@ -88,8 +88,8 @@
                                     "element": {
                                         "name": "Rest",
                                         "duration": [
-                                            1,
-                                            1
+                                            4,
+                                            4
                                         ]
                                     }
                                 },
@@ -797,19 +797,19 @@
                                         ],
                                         "notes": [
                                             {
-                                                "pitch": 50
+                                                "pitch": 41
                                             },
                                             {
-                                                "pitch": 54
+                                                "pitch": 55
                                             },
                                             {
-                                                "pitch": 59
+                                                "pitch": 57
                                             },
                                             {
                                                 "pitch": 60
                                             },
                                             {
-                                                "pitch": 64
+                                                "pitch": 63
                                             }
                                         ]
                                     }
@@ -838,19 +838,19 @@
                                         ],
                                         "notes": [
                                             {
-                                                "pitch": 43
+                                                "pitch": 50
                                             },
                                             {
-                                                "pitch": 53
+                                                "pitch": 54
                                             },
                                             {
-                                                "pitch": 58
+                                                "pitch": 59
                                             },
                                             {
                                                 "pitch": 60
                                             },
                                             {
-                                                "pitch": 62
+                                                "pitch": 64
                                             }
                                         ]
                                     }
@@ -879,16 +879,19 @@
                                         ],
                                         "notes": [
                                             {
-                                                "pitch": 51
+                                                "pitch": 43
                                             },
                                             {
-                                                "pitch": 55
+                                                "pitch": 53
                                             },
                                             {
                                                 "pitch": 58
                                             },
                                             {
-                                                "pitch": 68
+                                                "pitch": 60
+                                            },
+                                            {
+                                                "pitch": 62
                                             }
                                         ]
                                     }
@@ -933,16 +936,16 @@
                                         ],
                                         "notes": [
                                             {
-                                                "pitch": 48
+                                                "pitch": 51
                                             },
                                             {
-                                                "pitch": 52
+                                                "pitch": 55
                                             },
                                             {
-                                                "pitch": 59
+                                                "pitch": 58
                                             },
                                             {
-                                                "pitch": 61
+                                                "pitch": 68
                                             }
                                         ]
                                     }
@@ -971,19 +974,16 @@
                                         ],
                                         "notes": [
                                             {
-                                                "pitch": 47
+                                                "pitch": 48
                                             },
                                             {
-                                                "pitch": 57
+                                                "pitch": 52
                                             },
                                             {
                                                 "pitch": 59
                                             },
                                             {
-                                                "pitch": 60
-                                            },
-                                            {
-                                                "pitch": 63
+                                                "pitch": 61
                                             }
                                         ]
                                     }
@@ -1012,13 +1012,13 @@
                                         ],
                                         "notes": [
                                             {
-                                                "pitch": 44
+                                                "pitch": 47
                                             },
                                             {
-                                                "pitch": 55
+                                                "pitch": 57
                                             },
                                             {
-                                                "pitch": 56
+                                                "pitch": 59
                                             },
                                             {
                                                 "pitch": 60
@@ -1053,16 +1053,16 @@
                                         ],
                                         "notes": [
                                             {
-                                                "pitch": 47
+                                                "pitch": 44
                                             },
                                             {
-                                                "pitch": 53
+                                                "pitch": 55
                                             },
                                             {
-                                                "pitch": 54
+                                                "pitch": 56
                                             },
                                             {
-                                                "pitch": 57
+                                                "pitch": 60
                                             },
                                             {
                                                 "pitch": 63
@@ -1094,19 +1094,19 @@
                                         ],
                                         "notes": [
                                             {
-                                                "pitch": 45
+                                                "pitch": 47
+                                            },
+                                            {
+                                                "pitch": 53
+                                            },
+                                            {
+                                                "pitch": 54
                                             },
                                             {
                                                 "pitch": 57
                                             },
                                             {
-                                                "pitch": 60
-                                            },
-                                            {
-                                                "pitch": 61
-                                            },
-                                            {
-                                                "pitch": 64
+                                                "pitch": 63
                                             }
                                         ]
                                     }
@@ -1138,13 +1138,13 @@
                                                 "pitch": 45
                                             },
                                             {
-                                                "pitch": 55
+                                                "pitch": 57
+                                            },
+                                            {
+                                                "pitch": 60
                                             },
                                             {
                                                 "pitch": 61
-                                            },
-                                            {
-                                                "pitch": 62
                                             },
                                             {
                                                 "pitch": 64
@@ -1192,19 +1192,19 @@
                                         ],
                                         "notes": [
                                             {
-                                                "pitch": 41
+                                                "pitch": 45
                                             },
                                             {
                                                 "pitch": 55
                                             },
                                             {
-                                                "pitch": 57
+                                                "pitch": 61
                                             },
                                             {
-                                                "pitch": 60
+                                                "pitch": 62
                                             },
                                             {
-                                                "pitch": 63
+                                                "pitch": 64
                                             }
                                         ]
                                     }
@@ -1757,7 +1757,7 @@
             "annotations": [
                 {
                     "name": "Harmony",
-                    "text": "D7(9)(13)"
+                    "text": "F7(9)"
                 }
             ],
             "tick": 3840
@@ -1766,7 +1766,7 @@
             "annotations": [
                 {
                     "name": "Harmony",
-                    "text": "Gm7(11)"
+                    "text": "D7(9)(13)"
                 }
             ],
             "tick": 5760
@@ -1775,7 +1775,7 @@
             "annotations": [
                 {
                     "name": "Harmony",
-                    "text": "Eb(11)"
+                    "text": "Gm7(11)"
                 }
             ],
             "tick": 7680
@@ -1784,7 +1784,7 @@
             "annotations": [
                 {
                     "name": "Harmony",
-                    "text": "B(7)#9b9no5"
+                    "text": "Eb(11)"
                 }
             ],
             "tick": 9600
@@ -1793,7 +1793,7 @@
             "annotations": [
                 {
                     "name": "Harmony",
-                    "text": "B7(#9b9no5)"
+                    "text": "B(7)#9b9no5"
                 }
             ],
             "tick": 11520
@@ -1802,7 +1802,7 @@
             "annotations": [
                 {
                     "name": "Harmony",
-                    "text": "Ab(7) #9#11"
+                    "text": "B7(#9b9no5)"
                 }
             ],
             "tick": 13440
@@ -1811,7 +1811,7 @@
             "annotations": [
                 {
                     "name": "Harmony",
-                    "text": "B7(#11)"
+                    "text": "Ab(7) #9#11"
                 }
             ],
             "tick": 15360
@@ -1820,7 +1820,7 @@
             "annotations": [
                 {
                     "name": "Harmony",
-                    "text": "A(#9)"
+                    "text": "B7(#11)"
                 }
             ],
             "tick": 17280
@@ -1829,7 +1829,7 @@
             "annotations": [
                 {
                     "name": "Harmony",
-                    "text": "A7(11)"
+                    "text": "A(#9)"
                 }
             ],
             "tick": 19200
@@ -1838,7 +1838,7 @@
             "annotations": [
                 {
                     "name": "Harmony",
-                    "text": "F7(9)"
+                    "text": "A7(11)"
                 }
             ],
             "tick": 21120

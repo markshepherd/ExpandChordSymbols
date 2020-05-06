@@ -610,10 +610,8 @@ function sliceOfRhythmPattern(pattern, startTick, duration) {
         prevItem = item;
     }
 
-    var k = 0;
     var i = 0;
     while (needToFill > 0) {
-        if (++k > 10) break;
         item = pattern[i % pattern.length];
         var itemTick = item.tick + (Math.floor(i / pattern.length) * patternDuration);
 

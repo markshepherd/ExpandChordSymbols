@@ -100,7 +100,7 @@ MuseScore {
 
     RowLayout {
         id: addButtons
-        spacing: 20
+        spacing: 16
         enabled: useRhythmPattern.checked
         opacity: useRhythmPattern.checked ? 1.0 : 0.3
         anchors.left: addButtonBackground.left
@@ -275,19 +275,19 @@ MuseScore {
             Image {
                 visible: ref.voicing !== "bass" && ref.voicing !== "rest"
                 y: 12
-                source: parent.source.replace(/eighth/, "quarter") // to hide the eighth note's flag
+                source: parent.source.replace(/(eighth|sixteenth)/, "quarter") // to hide the eighth note's flag
             }
 
             Image {
                 visible: ref.voicing !== "bass" && ref.voicing !== "rest"
                 y: 24
-                source: parent.source.replace(/eighth/, "quarter") // to hide the eighth note's flag
+                source: parent.source.replace(/(eighth|sixteenth)/, "quarter") // to hide the eighth note's flag
             }
 
             Image {
                 visible: ref.voicing !== "nonbass" && ref.voicing !== "rest"
                 y: 45
-                source: ref.voicing === "bass" ? parent.source : parent.source.replace(/eighth/, "quarter")
+                source: ref.voicing === "bass" ? parent.source : parent.source.replace(/(eighth|sixteenth)/, "quarter")
             }
 
             Image {
@@ -387,6 +387,7 @@ MuseScore {
 
     // Fetch the filepath to the image that corresponds to the given duration, which is in ticks.
     function durationToSource(duration) {
+        if (duration === calcDuration(1, 16)) return "images/sixteenth.png";
         if (duration === calcDuration(1, 8)) return "images/eighth.png";
         if (duration === calcDuration(3, 16)) return "images/eighth dotted.png";
         if (duration === calcDuration(1, 4)) return "images/quarter.png";
@@ -404,6 +405,7 @@ MuseScore {
 
     // Initialize all the UI items relating to Rhythm Patterns
     function setupRhythmPatternUI() {
+        createAddButton(calcDuration(1, 16));
         createAddButton(calcDuration(1, 8));
         createAddButton(calcDuration(3, 16));
         createAddButton(calcDuration(1, 4));

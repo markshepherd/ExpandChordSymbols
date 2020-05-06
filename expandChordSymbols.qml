@@ -29,7 +29,7 @@ import QtQuick.Layouts 1.1
 import "ExpandChordSymbols.js" as ExpandChordSymbols
 
 MuseScore {
-    version: "3.0"
+    version: "4.0"
     description: "Expands chord symbols into a staff"
     menuPath: "Plugins.Expand Chord Symbols…"
     pluginType: "dialog"

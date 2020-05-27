@@ -8,9 +8,10 @@ MuseScore {
     version: "1.0"
     description: ""
     menuPath: "Plugins.Copy/Paste Rhythm…"
-    pluginType: "dialog"
+    pluginType: "dock"
+    dockArea: "left"
     id: window
-    width:  500;
+    width:  200;
     height: 200;
     property var sourceRhythm;
 
@@ -18,10 +19,21 @@ MuseScore {
     // The UI
     // -----------------------------------------------------------------------------------------------------
 
+    function copyMode() {
+        textLabel1.text = "Select the notes to copy the rhythm from, then click Copy.";
+        buttonDoIt.text = "Copy";
+        buttonCancel.text = "Done";
+    }
+
+    function pasteMode() {
+        buttonDoIt.text = "Paste";
+        buttonCancel.text = "Cancel";
+    }
+
     Label {
         id: textLabel1
         wrapMode: Text.WordWrap
-        text: "Select the notes to copy the rhythm from, then click Copy."
+        text: ""
         font.pointSize:12
         anchors.left: window.left
         anchors.top: window.top
@@ -31,7 +43,7 @@ MuseScore {
 
     Button {
         id : buttonDoIt
-        text: "Copy"
+        text: ""
         anchors.bottom: window.bottom
         anchors.right: window.right
         anchors.topMargin: 10
@@ -41,15 +53,15 @@ MuseScore {
             if (buttonDoIt.text === "Copy") {
                 var numNotes = doCopy();
                 if (numNotes) {
-                    textLabel1.text = "You selected " + numNotes + " notes.\n\nPlease select the notes to paste the rhythm into, then click Paste.";
-                    buttonDoIt.text = "Paste";
+                    pasteMode();
+                    textLabel1.text = "Copied " + numNotes + " notes.\n\nNow select the notes to paste the rhythm into, then click Paste.";
                 } else {
                     textLabel1.text = "There are no notes selected.\n\nPlease select 1 or more notes to copy the rhythm from, them click Copy.";
                 }
             } else {
                 var err = doPaste();
                 if (!err) {
-                    Qt.quit();
+                    copyMode();
                 } else if (err === "noselection") {
                     textLabel1.text = "There are no notes selected.\n\nPlease select 1 or more notes to paste the rhythm into, them click Paste.";
                 }
@@ -59,13 +71,17 @@ MuseScore {
 
     Button {
         id : buttonCancel
-        text: "Cancel"
+        text: "Done"
         anchors.bottom: window.bottom
         anchors.right: buttonDoIt.left
         anchors.topMargin: 10
         anchors.bottomMargin: 10
         onClicked: {
-            Qt.quit();
+            if (text === "Done") {
+                Qt.quit();
+            } else {
+                copyMode();
+            }
         }
     }
 
@@ -78,69 +94,6 @@ MuseScore {
         Utils.ensureSelectionIsRange();
         sourceRhythm = Utils.getSelectedRhythm();
         return sourceRhythm && sourceRhythm.length;
-    }
-
-    function findItemAtOffset(measure, track, offset) {
-        var segment = measure.firstSegment;
-        var startTime = segment.tick;
-        var count = 0;
-        while (segment) {
-            var element = segment.elementAt(track)  ;
-            if (((segment.tick - startTime) === offset) && element && (element.type === Element.REST || element.type === Element.CHORD)) {
-                if (element.type === Element.CHORD) {
-                    element = element.notes[0];
-                }
-
-                return element;
-            }
-            segment = segment.nextInMeasure;
-            if (++count > 100) {
-                console.log("findItemAtOffset loop!!");
-                return null;
-            }
-        }
-        console.log("findItemAtOffset result null");
-        return null;
-    }
-
-    function setItemDuration(duration) {
-        var cmds = {};
-        cmds[division * 4]  =  "1";
-        cmds[division * 2]  =  "2";
-        cmds[division * 1]  =  "4";
-        cmds[division / 2]  =  "8";
-        cmds[division / 4]  = "16";
-        cmds[division / 8]  = "32";
-        cmds[division / 16] = "64";
-
-        var dot;
-        var result = cmds[duration];
-        if (!result) {
-            result = cmds[duration * 2 / 3];
-            dot = "dot";
-        }
-        if (!result) {
-            result = cmds[duration * 4 / 7];
-            dot = "dotdot";
-        }
-        if (!result) {
-            result = cmds[duration * 8 / 15];
-            dot = "dot3";
-        }
-        if (!result) {
-            result = cmds[duration * 16 / 31];
-            dot = "dot4";
-        }
-        if (!result) {
-            console.log("can't find cmd for duration", duration);
-            return;
-        }
-
-        var command = "pad-note-" + result;
-        cmd(command);
-        if (dot) {
-            cmd("pad-" + dot);
-        }
     }
 
     function doPaste() {
@@ -157,15 +110,19 @@ MuseScore {
         // console.log("------------- 2");
 
         var filledDuration = 0;
-        var measure = curScore.lastMeasure.prevMeasure;
+        var tempMeasure = curScore.lastMeasure.prevMeasure;
         for (var j = 0; j < target.notes.length; j += 1) {
+            var targetNote = target.notes[j];
+            if (targetNote.tieBack) {
+                continue;
+            }
 
-            // dumpElement("copying target", target.notes[j]);
-            Utils.selectNote(target.notes[j]);
+            // dumpElement("copying target", targetNote);
+            Utils.selectNote(targetNote);
             cmd("copy");
             // console.log("------------- 3");
 
-            curScore.selection.select(findItemAtOffset(measure, target.track, filledDuration));
+            curScore.selection.select(Utils.findItemAtOffset(tempMeasure, target.track, filledDuration));
             cmd("paste");
             // console.log("------------- 4");
 
@@ -174,10 +131,10 @@ MuseScore {
             var prev;
             for (var k = 0; k < sourceNote.durations.length; k += 1) {
                 if (k == 0) {
-                    var tempItem = findItemAtOffset(measure, target.track, filledDuration);
+                    var tempItem = Utils.findItemAtOffset(tempMeasure, target.track, filledDuration);
                     // console.log("------------- 5");
                     curScore.selection.select(tempItem);
-                    setItemDuration(sourceNote.durations[k]);
+                    Utils.setItemDuration(sourceNote.durations[k]);
                     filledDuration += sourceNote.durations[k];
                     prev = tempItem;
                     // Utils.dumpElement("prev 1", prev);
@@ -186,19 +143,19 @@ MuseScore {
                     if(prev.name === "Rest") {
                         // console.log("------------- 7");
 
-                        var tempRest = findItemAtOffset(measure, target.track, filledDuration);
+                        var tempRest = Utils.findItemAtOffset(tempMeasure, target.track, filledDuration);
                         curScore.selection.select(tempRest);
-                        setItemDuration(sourceNote.durations[k]);
+                        Utils.setItemDuration(sourceNote.durations[k]);
                         // Utils.dumpElement("prev 2", prev);
                         prev = tempRest;
                     } else {
                         // console.log("------------- 8");
                         curScore.selection.select(prev);
                         cmd("note-input");
-                        setItemDuration(sourceNote.durations[k]);
+                        Utils.setItemDuration(sourceNote.durations[k]);
                         cmd("tie");
                         cmd("escape");
-                        prev = findItemAtOffset(measure, target.track, filledDuration);
+                        prev = Utils.findItemAtOffset(tempMeasure, target.track, filledDuration);
                         // Utils.dumpElement("prev 3", prev);
                     }
                     filledDuration += sourceNote.durations[k];
@@ -209,28 +166,59 @@ MuseScore {
 
         // console.log("------------- 9");
 
-        curScore.selection.selectRange(measure.firstSegment.tick, measure.firstSegment.tick + filledDuration,
-            target.track / 4, (target.track / 4) + 1);
+        // The temp area now has the exact contents we want.
+
+        // Delete the original target contents
+        // console.log("selectRange", target.beginTick, target.endTick, target.staff, target.staff + 1);
+        curScore.selection.selectRange(target.beginTick, target.endTick, target.staff, target.staff + 1);
+        cmd("delete");
+
+        // Copy the new contents from the temp area
+        curScore.selection.selectRange(tempMeasure.firstSegment.tick, tempMeasure.firstSegment.tick + filledDuration,
+            target.staff, target.staff + 1);
         cmd("copy");
         // console.log("------------- 10");
 
-        curScore.selection.select(target.notes[0]);
+        // Paste the new contents into the target area
+        // BTW, at this point, the first Rest of the target area is already selected as a non-range selection,
+        // perhaps left over from the cmd(delete) above. But why is there both a range and a non-range selection!?
+        var newTarget = Utils.findNoteAtTick(target.beginTick, target.track);
+        // Utils.dumpElement("newTarget", newTarget);
+        // console.log("nt", newTarget);
+        curScore.selection.select(newTarget);
         cmd("paste");
         // console.log("------------- 11");
 
-        curScore.selection.selectRange(measure.firstSegment.tick, curScore.lastSegment.tick + 1,
-            target.track / 4, (target.track / 4) + 1);
+        // Delete the temp area
+        curScore.selection.selectRange(tempMeasure.firstSegment.tick, curScore.lastSegment.tick + 1,
+            target.staff, target.staff + 1);
         cmd("time-delete");
         // console.log("------------- 12");
 
-        console.log("final select",
-            Utils.getTick(target.notes[0]), Utils.getTick(target.notes[0]) + filledDuration,
-            target.track / 4, (target.track / 4) + 1);
-        cmd("escape");
-        curScore.selection.selectRange(
-            Utils.getTick(target.notes[0]), Utils.getTick(target.notes[0]) + filledDuration,
-            target.track / 4, (target.track / 4) + 1);
+        // Select the new contents of the target area
+        cmd("escape"); // this seems to make it work better
+        // console.log("final selectRange", target.beginTick, target.beginTick + filledDuration,
+        //     target.staff, target.staff + 1);
+        // curScore.selection.selectRange(target.beginTick, target.beginTick + filledDuration,
+        //     target.staff, target.staff + 1);
+        //cmd("get-location"); // this seems to scroll the view so that the selection kind-of is visible
         // console.log("------------- 13");
+
+        var updatedTarget = Utils.findNoteAtTick(target.beginTick, target.track);
+        // Utils.dumpElement("updatedTarget", updatedTarget);
+        curScore.selection.select(updatedTarget);
+
+        // console.log("final selectRange", target.beginTick, target.beginTick + filledDuration,
+        //     target.staff, target.staff + 1);
+        curScore.selection.selectRange(target.beginTick, target.beginTick + filledDuration,
+            target.staff, target.staff + 1);
+        cmd("get-location"); // this seems to scroll the view so that the selection kind-of is visible
+        // console.log("------------- 14");
+        // console.log("final selectRange", target.beginTick, target.beginTick + filledDuration,
+        //     target.staff, target.staff + 1);
+        curScore.selection.selectRange(target.beginTick, target.beginTick + filledDuration,
+            target.staff, target.staff + 1);
+        // console.log("------------- 15");
     }
 
     /*
@@ -263,5 +251,6 @@ MuseScore {
     */
 
     onRun: {
+        copyMode();
     }
 }

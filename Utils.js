@@ -264,9 +264,6 @@ function ensureSelectionIsRange() {
 
 // returns {notes: [<element>, ...], track: <n>, staff: <n>, measure: <measure>, beginTick: <n>, endTick: <n>}
 function getSelectedNotes() {
-    // Workaround: iterating over curScore.selection.elements doesn't work if the selection is not a range
-    ensureSelectionIsRange();
-
     var result = {notes: [], track: -1, beginTick: Number.MAX_VALUE, endTick: Number.MIN_VALUE};
     var selectedElements = curScore.selection.elements;
     if (selectedElements) {

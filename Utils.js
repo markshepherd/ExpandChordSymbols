@@ -5,6 +5,9 @@
 // Each set of tied notes is considered one note, whose "duration" is the sum of all the tied notes.
 // "durations" is a list of each individual tied note's duration.
 function getSelectedRhythm() {
+    // Workaround: using Cursor to iterate over SELECTION doesn't work if the selection is not a range
+    ensureSelectionIsRange();
+
     var result = [];
 
     // locate the selection
@@ -229,6 +232,7 @@ function dumpSelection(label) {
     }        
 }
 
+// Selects a range of the covering the specified list of notes.
 function selectNotes(notes) {
     var minTick = Number.MAX_VALUE;
     var maxTick = Number.MIN_VALUE;
@@ -245,6 +249,12 @@ function selectNotes(notes) {
     curScore.selection.selectRange(minTick, maxTick, minTrack / 4, (maxTrack / 4) + 1);
 }
 
+// If the current selection is not a range, this function changes the current selection to a range selection.
+// There are 2 kinds of selection:
+// - range selection: a region of the score covering a specified range of times and staffs (created by using shift-click)
+// - non-range selection: a specific list of elements (created by using cmd-click)
+// This is necessary because some MuseScore commands (e.g. copy), and some of our Utils 
+// functions (e.g. getSelectedRhythm, ) only work properly on range selections.
 function ensureSelectionIsRange() {
     var sel = curScore.selection;
     if (!sel.isRange) {
@@ -254,6 +264,9 @@ function ensureSelectionIsRange() {
 
 // returns {notes: [<element>, ...], track: <n>, staff: <n>, measure: <measure>, beginTick: <n>, endTick: <n>}
 function getSelectedNotes() {
+    // Workaround: iterating over curScore.selection.elements doesn't work if the selection is not a range
+    ensureSelectionIsRange();
+
     var result = {notes: [], track: -1, beginTick: Number.MAX_VALUE, endTick: Number.MIN_VALUE};
     var selectedElements = curScore.selection.elements;
     if (selectedElements) {

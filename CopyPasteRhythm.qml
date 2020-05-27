@@ -71,7 +71,7 @@ MuseScore {
 
     Button {
         id : buttonCancel
-        text: "Done"
+        text: ""
         anchors.bottom: window.bottom
         anchors.right: buttonDoIt.left
         anchors.topMargin: 10
@@ -89,87 +89,122 @@ MuseScore {
     // The Code
     // -----------------------------------------------------------------------------------------------------
 
-
+    // Captures the rhythm pattern of the current selection into the global variable "sourceRhythm".
+    // Returns true iff the pattern contains at least 1 note.
     function doCopy() {
-        Utils.ensureSelectionIsRange();
         sourceRhythm = Utils.getSelectedRhythm();
         return sourceRhythm && sourceRhythm.length;
     }
 
+    // Pastes the previously-captured rhythm pattern into the current selection.
     function doPaste() {
-        // console.log("------------- 1");
-        Utils.ensureSelectionIsRange();
+        // Terminology:
+        // "source" is the rhythm pattern that was captured by doing Copy
+        // "target" is the set of items to which the rhythm pattern will be Pasted
+        // "item" is either a note or a rest. The source and target may contain either kind. 
+        // "temp" is the temporary area where we assemble the updated notes
+
+        // Capture the target selection into "target".
         var target = Utils.getSelectedNotes();
         if (!target || !target.notes.length) {
             return "noselection";
         }
 
+        // Validate the target selection.
+        // ... TODO ...
+        // first note must not be tieback
+        // updated target must not cross measure boundary
+        // all target notes must be in same track
+        // no other voices can exist in the target area
+        // must have same number of notes as source
+        // no tuplets in target
+        // no tuplets in source
+        // warn if we will overwrite 1 or more notes that follow the target
+
+        // Create a temp area at the end of the score, where we will assemble the updated target notes.
+        // Workaround: we only need one measure, but we insert 2 measures because something wasn't working
+        // right when the temp measure was the last measure of the score (I think it failed to delete?).
         curScore.startCmd();
         curScore.appendMeasures(2);
         curScore.endCmd();
-        // console.log("------------- 2");
-
-        var filledDuration = 0;
         var tempMeasure = curScore.lastMeasure.prevMeasure;
+
+        // keep track of the total duration of all the updated notes, so far
+        var filledDuration = 0;
+
+        // Process the target notes one at a time.
         for (var j = 0; j < target.notes.length; j += 1) {
             var targetNote = target.notes[j];
+
+            // If several target notes are tied together, we consider them a single note.
+            // Therefore, if the current note is tied to a previous note, we ignore it.
             if (targetNote.tieBack) {
                 continue;
             }
 
-            // dumpElement("copying target", targetNote);
+            // Copy the target  to the clipboard.
+            // This includes all the item's attributes, such as articulation, lyrics, etc...
             Utils.selectNote(targetNote);
             cmd("copy");
-            // console.log("------------- 3");
 
+            // Paste the target item to the temp area. This could be either a note or a rest.
             curScore.selection.select(Utils.findItemAtOffset(tempMeasure, target.track, filledDuration));
             cmd("paste");
-            // console.log("------------- 4");
 
+            // Find the item we just pasted.
+            var tempItem = Utils.findItemAtOffset(tempMeasure, target.track, filledDuration);
+
+            // Find the corresponding item in the rhythm pattern. 
             var sourceNote = sourceRhythm[j];
-            var newNotes = [];
-            var prev;
-            for (var k = 0; k < sourceNote.durations.length; k += 1) {
-                if (k == 0) {
-                    var tempItem = Utils.findItemAtOffset(tempMeasure, target.track, filledDuration);
-                    // console.log("------------- 5");
-                    curScore.selection.select(tempItem);
-                    Utils.setItemDuration(sourceNote.durations[k]);
-                    filledDuration += sourceNote.durations[k];
-                    prev = tempItem;
-                    // Utils.dumpElement("prev 1", prev);
-                    // console.log("------------- 6");
-                } else {
-                    if(prev.name === "Rest") {
-                        // console.log("------------- 7");
 
-                        var tempRest = Utils.findItemAtOffset(tempMeasure, target.track, filledDuration);
-                        curScore.selection.select(tempRest);
-                        Utils.setItemDuration(sourceNote.durations[k]);
-                        // Utils.dumpElement("prev 2", prev);
-                        prev = tempRest;
-                    } else {
-                        // console.log("------------- 8");
-                        curScore.selection.select(prev);
-                        cmd("note-input");
-                        Utils.setItemDuration(sourceNote.durations[k]);
-                        cmd("tie");
-                        cmd("escape");
-                        prev = Utils.findItemAtOffset(tempMeasure, target.track, filledDuration);
-                        // Utils.dumpElement("prev 3", prev);
-                    }
-                    filledDuration += sourceNote.durations[k];
+            // The source item might actually be a series of one or more notes tied together,
+            // This is specified in "sourceNote.durations".
+            // Set the temp item's duration equal to the first item of the source series ...
+            curScore.selection.select(tempItem);
+            Utils.setItemDuration(sourceNote.durations[0]);
+            filledDuration += sourceNote.durations[0];
+
+            // Keep track of our progess through the source series
+            var newNotes = [tempItem];
+            var prev = tempItem;
+
+            // Append all subsequent items in the source series
+            for (var k = 1; k < sourceNote.durations.length; k += 1) {
+                if(prev.name !== "Rest") {
+                    // The target is a note.
+
+                    // Select the previous note of the series
+                    curScore.selection.select(prev);
+
+                    // Now we do a sequence of simulated UI commands...
+                    // ... go into note input mode
+                    cmd("note-input");
+                    // ... click the appropriate note button in the Note Input toolbar
+                    Utils.setItemDuration(sourceNote.durations[k]);
+                    // ... click the "tie" button to create a note of the desired duration and tie it to prev
+                    cmd("tie");
+                    // ... get out of note input mode
+                    cmd("escape");
+
+                    // grab the note we just created 
+                    prev = Utils.findItemAtOffset(tempMeasure, target.track, filledDuration);
+                } else {
+                    // The target is a rest. We cannot tie rests together, but no problem --
+                    // Just grab the rest at the appropriate location...
+                    prev = Utils.findItemAtOffset(tempMeasure, target.track, filledDuration);
+
+                    // ...and set its duration
+                    curScore.selection.select(prev);
+                    Utils.setItemDuration(sourceNote.durations[k]);
                 }
                 newNotes.push(prev);
+                filledDuration += sourceNote.durations[k];
             }
         }
-
-        // console.log("------------- 9");
 
         // The temp area now has the exact contents we want.
 
         // Delete the original target contents
-        // console.log("selectRange", target.beginTick, target.endTick, target.staff, target.staff + 1);
         curScore.selection.selectRange(target.beginTick, target.endTick, target.staff, target.staff + 1);
         cmd("delete");
 
@@ -177,80 +212,57 @@ MuseScore {
         curScore.selection.selectRange(tempMeasure.firstSegment.tick, tempMeasure.firstSegment.tick + filledDuration,
             target.staff, target.staff + 1);
         cmd("copy");
-        // console.log("------------- 10");
 
         // Paste the new contents into the target area
         // BTW, at this point, the first Rest of the target area is already selected as a non-range selection,
         // perhaps left over from the cmd(delete) above. But why is there both a range and a non-range selection!?
         var newTarget = Utils.findNoteAtTick(target.beginTick, target.track);
-        // Utils.dumpElement("newTarget", newTarget);
-        // console.log("nt", newTarget);
         curScore.selection.select(newTarget);
         cmd("paste");
-        // console.log("------------- 11");
 
         // Delete the temp area
         curScore.selection.selectRange(tempMeasure.firstSegment.tick, curScore.lastSegment.tick + 1,
             target.staff, target.staff + 1);
         cmd("time-delete");
-        // console.log("------------- 12");
 
-        // Select the new contents of the target area
-        cmd("escape"); // this seems to make it work better
-        // console.log("final selectRange", target.beginTick, target.beginTick + filledDuration,
-        //     target.staff, target.staff + 1);
-        // curScore.selection.selectRange(target.beginTick, target.beginTick + filledDuration,
-        //     target.staff, target.staff + 1);
-        //cmd("get-location"); // this seems to scroll the view so that the selection kind-of is visible
-        // console.log("------------- 13");
-
+        // Select the new contents of the target area. We have to dance around a bit in order to coax
+        // the score view to scroll so that the selection is visible
+        cmd("escape");
         var updatedTarget = Utils.findNoteAtTick(target.beginTick, target.track);
-        // Utils.dumpElement("updatedTarget", updatedTarget);
         curScore.selection.select(updatedTarget);
-
-        // console.log("final selectRange", target.beginTick, target.beginTick + filledDuration,
-        //     target.staff, target.staff + 1);
         curScore.selection.selectRange(target.beginTick, target.beginTick + filledDuration,
             target.staff, target.staff + 1);
         cmd("get-location"); // this seems to scroll the view so that the selection kind-of is visible
-        // console.log("------------- 14");
-        // console.log("final selectRange", target.beginTick, target.beginTick + filledDuration,
-        //     target.staff, target.staff + 1);
         curScore.selection.selectRange(target.beginTick, target.beginTick + filledDuration,
             target.staff, target.staff + 1);
-        // console.log("------------- 15");
     }
-
-    /*
-        startCmd/endCmd
-
-        allow click-select of 1 note, instead of range-select
-
-        after we finished, the score scrolls to the last measure
-
-        chords
-
-        tuplets
-
-        selectRange : to select entire last meaure, endTick must be 1 past the end of score. 
-        I get these error messages when doing cmd("time-delete")
-            Debug: tick2measureMM 19201 (max 17280) not found
-            Debug: tick2leftSegment(): not found tick 19201
-        and when I play to end, musescore crashes in MasterScore::setPos - Q_ASSERT(tick <= lastMeasure()->endTick()); 
-
-        ocnl crash in void MuseScore::changeState() when val == STATE_NOTE_ENTRY_METHOD_STEPTIME
-
-        check for sufficient version of MuseScore
-
-        (check target selection)
-        (    must have same number of notes as source)
-        (    must have same duration as source)
-        (    must all be in same track)
-
-        for each target chord (throw away all notes that are tied to each chord)
-    */
 
     onRun: {
         copyMode();
     }
+
+    /*
+    to implement:
+        simplify the final dance
+        validation of source/target
+        startCmd/endCmd
+        check for sufficient version of MuseScore
+        better UI layout, larger font
+
+    to test:
+        allow use of click-select or shift-select
+        after we finished, the updated target should be visible and selected
+        chords
+        tuplets
+
+    select bugs:
+        selectRange : to select entire last meaure, endTick must be 1 past the end of score.
+
+    plugin api issues:
+        I get these error messages when doing cmd("time-delete")
+            Debug: tick2measureMM 19201 (max 17280) not found
+            Debug: tick2leftSegment(): not found tick 19201
+        when I play to end, musescore crashes in MasterScore::setPos - Q_ASSERT(tick <= lastMeasure()->endTick()); 
+        ocnl crash in void MuseScore::changeState() when val == STATE_NOTE_ENTRY_METHOD_STEPTIME
+    */
 }

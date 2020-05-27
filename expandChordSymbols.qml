@@ -30,7 +30,7 @@ import "ExpandChordSymbols.js" as ExpandChordSymbols
 import "Utils.js" as Utils
 
 MuseScore {
-    version: "4.0"
+    version: "5.0"
     description: "Expands chord symbols into a staff"
     menuPath: "Plugins.Expand Chord Symbols…"
     pluginType: "dialog"

@@ -27,6 +27,7 @@ import QtQuick.Dialogs 1.0
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.1
 import "ExpandChordSymbols.js" as ExpandChordSymbols
+import "Utils.js" as Utils
 
 MuseScore {
     version: "4.0"
@@ -120,6 +121,7 @@ MuseScore {
         anchors.leftMargin: 15
         onClicked: {
             clearPattern();
+            selectedRhythm = Utils.getSelectedRhythm();
             for (var i = 0; i < selectedRhythm.length; i += 1) {
                 var duration = selectedRhythm[i].duration;
                 var rest = selectedRhythm[i].rest;
@@ -415,7 +417,7 @@ MuseScore {
         createAddButton(calcDuration(1, 1));
 
         // Fetch the pattern in the current score selection, just in case the user wants it.
-        selectedRhythm = ExpandChordSymbols.getSelectedRhythm();
+        selectedRhythm = Utils.getSelectedRhythm();
 
         // Initialize the rhythm pattern to the last pattern used in this score.
         // If the user doesn't want this, she can simply clear it.

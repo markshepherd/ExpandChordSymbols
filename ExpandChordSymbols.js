@@ -53,6 +53,8 @@
 // 6. [addBass] add the bass note to the chord.
 //      e.g. [48, 55, 58, 60, 63]
 
+// .import "Utils.js" as Utils
+
 // Returns the interval above C that corresponds to the letter/sharp/flat fields in "spec"
 function letterToInterval(spec) {
     var letterToSemi = {C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11};
@@ -95,6 +97,7 @@ function numNotesAboveThreshold(midiNotes, threshold) {
 }
 
 // Adds a rest to the score, using the current cursor position and duration.
+// TODO update to musescore 3.5 addRest
 function addRest(cursor) {
     // Adding a rest to the score requires a little dance ...
 
@@ -127,76 +130,6 @@ function clearStaff(track) {
         }
         cursor.next();
     }
-}
-
-// Returns a list of all the notes in the current score's selection,
-// in the form [{duration: <num>, tick: <num>, rest: <bool>}, ...]
-// "tick" is relative to the start of the selection.
-function getSelectedRhythm() {
-    var result = [];
-
-    // locate the selection
-    var cursor = curScore.newCursor();
-    cursor.rewind(Cursor.SELECTION_START);
-
-    if (cursor.segment) {
-        // The selection exists. Remember where it begins.
-        var startTick = cursor.tick;
-
-        // We will use this variable to consolidate tied notes into a single note
-        var firstNote;
-
-        // We will only look at the first staff of the selection.
-        var staffId = cursor.staffIdx;
-
-        // Find the end of the selection
-        cursor.rewind(Cursor.SELECTION_END);
-        var endTick = (cursor.tick !== 0)
-            ? cursor.tick                    // Normal case
-            : curScore.lastSegment.tick + 1; // The selection includes the end of the last measure.
-
-        // Now go back to the beginning of the selection, and iterate over all the notes.
-        // The rewind() function sets the voice to 0, that's the only voice we will look at.
-        cursor.rewind(Cursor.SELECTION_START); 
-        cursor.staffIdx = staffId;
-        while (cursor.segment && cursor.tick < endTick) {
-            if (cursor.element) {
-                var duration = cursor.element.duration;
-                var durationInTicks = (division * 4) * duration.numerator / duration.denominator;
-                var resultNote = {duration: durationInTicks, tick: cursor.tick - startTick};
-
-                if (cursor.element.type === Element.CHORD) {
-                    // TODO: if the note is part of a triplet, adjust the numbers as required.
-
-                    // See if the current note is tied to the previous note, or the next note.
-                    if (cursor.element.notes && cursor.element.notes.length > 0) {
-                        var note = cursor.element.notes[0];
-
-                        if (note.tieForward && !note.tieBack) {
-                            // This is the first note of a tied sequence
-                            firstNote = resultNote;
-                        }
-                        if (note.tieBack && firstNote) {
-                            // This is a note of a tied sequence
-                            firstNote.duration += resultNote.duration;
-                            resultNote = null;
-                        }
-                        if (!note.tieForward) {
-                            // This note is not tied to the next note.
-                            firstNote = null;
-                        }
-                    }
-                    if (resultNote) result.push (resultNote);
-                } else if (cursor.element.type == Element.REST) {
-                    resultNote.rest = true;
-                    result.push (resultNote);
-                }
-            }
-            cursor.next();
-        }
-    }
-
-    return result.length > 0 ? result : null;
 }
 
 // A regular expression that matches the "front" part of a chord symbol. These items -
@@ -550,6 +483,8 @@ function findAllChordSymbols() {
                 // Save the chord for this tick. If multiple tracks have a chord at the same tick,
                 // we will only keep the last one we find.
                 chords[segment.tick] = {tick: segment.tick, text: annotation.text};
+            } else if (annotation.name === "FretDiagram") {
+                // TODO console.log("FretDiagram", annotation.symbol, annotation.label, annotation.text);
             }
         }
         segment = segment.next;
@@ -570,6 +505,7 @@ function findAllChordSymbols() {
         var lastItem = result[result.length - 1];
         lastItem.duration = scoreDuration - lastItem.tick;
     }
+
     return result;
 }
 
@@ -730,6 +666,12 @@ function writeChords(chords, track, theRhythm, options) {
                         }
                     }
                 }
+
+                // Here's how to add an arpeggio to the chord we just added
+                // cursor.prev();
+                // var e = newElement(Element.ARPEGGIO);
+                // cursor.add(e);
+                // cursor.next();
 
                 // NOTE: there is a limitation with cursor.addNote(), it sometimes adds a note shorter
                 // than the requested duration. The following workaround adds the missing time 

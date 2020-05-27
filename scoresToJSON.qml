@@ -22,6 +22,7 @@ import QtQuick 2.2
 import MuseScore 3.0
 import Qt.labs.platform 1.0
 import QtQuick.Controls 2.0
+import "Utils.js" as Utils
 
 
 // This MuseScore 3 plugin creates files that contains a JSON representation of 
@@ -34,8 +35,8 @@ import QtQuick.Controls 2.0
 // the resulting string to a file. 
 
 // Version 1 of the plugin writes most of the musical data that is available
-// via the MuseScore 3.4 plugin API. There are some things missing (like tuplets or
-// key signatures) because I could not find a way to get the information from the API,
+// via the MuseScore 3.4 plugin API. There are some things missing
+// because I could not find a way to get the information from the API,
 // And there might be a few things missing because I'm too lazy:)
 
 MuseScore {
@@ -65,70 +66,6 @@ MuseScore {
             }
         }
         return "???";
-    }
-
-    // Return true iff elements of the specified type have a meaningful "text" property.
-    function elementTypeHasText(elementType) {
-        switch (elementType) {
-            case Element.LYRICS:
-            case Element.TEXT:
-            case Element.HARMONY:
-            case Element.DYNAMIC:
-            case Element.STAFF_TEXT:
-            case Element.REHEARSAL_MARK:
-            case Element.TEMPO:
-                return true;
-        }
-        return false;
-    }
-
-    // Returns a JSON-compatible data structure corresponding to an element.
-    function getElementResult(element) {
-        var result = {name: element.name};
-
-        if (element.type === Element.REST) {
-            result.duration = [element.duration.numerator, element.duration.denominator];
-
-        } else if (element.type === Element.CHORD) {
-            result.duration = [element.duration.numerator, element.duration.denominator];
-
-            if (element.notes) {
-                result.notes = [];
-                for (var i = 0; i < element.notes.length; i += 1) {
-                    var note = element.notes[i];
-                    var noteResult = {pitch: note.pitch};
-                    if (note.tieForward) noteResult.tieForward = true;
-                    if (note.tieBack) noteResult.tieBack = true;
-                    result.notes.push(noteResult);
-                }
-            }
-            if (element.lyrics && element.lyrics.length > 0) {
-                result.lyrics = [];
-                for (var j = 0; j < element.lyrics.length; j += 1) {
-                    result.lyrics.push(getElementResult(element.lyrics[j]));
-                }
-            }
-            if (element.graceNotes && element.graceNotes.length > 0) {
-                result.graceNotes = [];
-                for (var k = 0; j < element.graceNotes.length; k += 1) {
-                    result.graceNotes.push(getElementResult(element.graceNotes[k]));
-                }
-            }
-
-        } else if (elementTypeHasText(element.type)) {
-            result.text = element.text;
-
-        } else if (element.type === Element.KEYSIG) {
-            // TODO is there a way to find out more info?
-
-        } else if (element.type === Element.TIMESIG) {
-            // TODO is there a way to find out more info?
-
-        } else if (element.type === Element.CLEF) {
-            // TODO is there a way to find out more info?
-        }
-
-        return result;
     }
 
     // "getScoreResult()" returns a JSON-compatible data structure representing the score and
@@ -178,10 +115,10 @@ MuseScore {
                     measureNumber += 1;
                     var measureResult = {segments: []};
                     for (var segment = measure.firstSegment; segment; segment = segment.nextInMeasure) {
-                        var segmentResult = {tick: segment.tick, type: segment.segmentType.toString(), name: segment.name};
+                        var segmentResult = {name: segment.name, tick: segment.tick, type: segment.segmentType.toString()};
                         var element = segment.elementAt((4 * staffNumber) + voiceNumber);
                         if (element) {
-                            segmentResult.element = getElementResult(element);
+                            segmentResult.element = Utils.getElementInfo(element);
                             measureResult.segments.push(segmentResult);
                         }
                     }
@@ -199,10 +136,10 @@ MuseScore {
         // Gather the annotations, which are not part of any staff.
         var annotationsResult = [];
         for (var segment = score.firstSegment(); segment; segment = segment.next) {
-            var segmentResult = {tick: segment.tick, annotations: []};
+            var segmentResult = {annotations: [], tick: segment.tick};
             if (segment.annotations) {
                 for (var i in segment.annotations) {
-                    segmentResult.annotations.push(getElementResult(segment.annotations[i]));
+                    segmentResult.annotations.push(Utils.getElementInfo(segment.annotations[i]));
                 }
             }
             if (segmentResult.annotations.length > 0) {
@@ -220,7 +157,7 @@ MuseScore {
             for (var j = 0; j < measure.elements.length; j += 1) {
                 var element = measure.elements[j];
                 if (element) {
-                    measureResult.elements.push(getElementResult(element));
+                    measureResult.elements.push(Utils.getElementInfo(element));
                 }
             }
             if (measureResult.elements.length > 0) {

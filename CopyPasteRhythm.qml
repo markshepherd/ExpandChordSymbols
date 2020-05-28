@@ -133,8 +133,17 @@ MuseScore {
         var filledDuration = 0;
 
         // Process the target notes one at a time.
+        var prevTargetNoteTick;
+        var sourceIndex = 0;
         for (var j = 0; j < target.notes.length; j += 1) {
             var targetNote = target.notes[j];
+
+            // If the target note has the same time as the previous target note,
+            // then we should skip it - all notes at that time have already been handled.
+            if (prevTargetNoteTick && (prevTargetNoteTick === Utils.getTick(targetNote))) {
+                continue;
+            }
+            prevTargetNoteTick = Utils.getTick(targetNote);
 
             // If several target notes are tied together, we consider them a single note.
             // Therefore, if the current note is tied to a previous note, we ignore it.
@@ -143,7 +152,8 @@ MuseScore {
             }
 
             // Copy the target  to the clipboard.
-            // This includes all the item's attributes, such as articulation, lyrics, etc...
+            // This includes all the item's attributes, such as articulation, lyrics, etc,
+            // and all the notes in the same chord.
             Utils.selectNote(targetNote);
             cmd("copy");
 
@@ -154,8 +164,8 @@ MuseScore {
             // Find the item we just pasted.
             var tempItem = Utils.findItemAtOffset(tempMeasure, target.track, filledDuration);
 
-            // Find the corresponding item in the rhythm pattern. 
-            var sourceNote = sourceRhythm[j];
+            // Find the next item in the rhythm pattern. 
+            var sourceNote = sourceRhythm[sourceIndex++];
 
             // The source item might actually be a series of one or more notes tied together,
             // This is specified in "sourceNote.durations".
@@ -227,12 +237,9 @@ MuseScore {
 
         // Select the new contents of the target area. We have to dance around a bit in order to coax
         // the score view to scroll so that the selection is visible
-        cmd("escape");
-        var updatedTarget = Utils.findNoteAtTick(target.beginTick, target.track);
-        curScore.selection.select(updatedTarget);
         curScore.selection.selectRange(target.beginTick, target.beginTick + filledDuration,
             target.staff, target.staff + 1);
-        cmd("get-location"); // this seems to scroll the view so that the selection kind-of is visible
+        cmd("get-location");
         curScore.selection.selectRange(target.beginTick, target.beginTick + filledDuration,
             target.staff, target.staff + 1);
     }
@@ -243,20 +250,18 @@ MuseScore {
 
     /*
     to implement:
-        simplify the final dance
         validation of source/target
         startCmd/endCmd
         check for sufficient version of MuseScore
         better UI layout, larger font
 
-    to test:
-        allow use of click-select or shift-select
+    test plan:
+        make selection with click-select or shift-select
         after we finished, the updated target should be visible and selected
-        chords
-        tuplets
+        test all validation violations
 
     select bugs:
-        selectRange : to select entire last meaure, endTick must be 1 past the end of score.
+        selectRange : to select entire last measure, endTick must be 1 past the end of score.
 
     plugin api issues:
         I get these error messages when doing cmd("time-delete")

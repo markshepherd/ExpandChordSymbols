@@ -14,29 +14,32 @@ MuseScore {
     width:  200;
     height: 200;
     property var sourceRhythm;
+    property var numSourceItems;
+    property var mode;
 
     // -----------------------------------------------------------------------------------------------------
     // The UI
     // -----------------------------------------------------------------------------------------------------
 
-    function copyMode() {
-        textLabel1.text = "Select the notes to copy the rhythm from, then click Copy.";
-        buttonDoIt.text = "Copy";
-        buttonCancel.text = "Done";
-    }
-
-    function pasteMode() {
-        buttonDoIt.text = "Paste";
-        buttonCancel.text = "Cancel";
-    }
-
     Label {
         id: textLabel1
         wrapMode: Text.WordWrap
         text: ""
-        font.pointSize:12
+        color: "black"
+        font.pointSize:15
         anchors.left: window.left
         anchors.top: window.top
+        anchors.leftMargin: 10
+        anchors.topMargin: 15
+    }
+
+    Label {
+        id: textLabel2
+        wrapMode: Text.WordWrap
+        text: ""
+        font.pointSize:15
+        anchors.left: window.left
+        anchors.top: textLabel1.bottom
         anchors.leftMargin: 10
         anchors.topMargin: 10
     }
@@ -50,20 +53,22 @@ MuseScore {
         anchors.bottomMargin: 10
         anchors.rightMargin: 10
         onClicked: {
-            if (buttonDoIt.text === "Copy") {
-                var numNotes = doCopy();
-                if (numNotes) {
+            if (mode === "copy") {
+                var copyResult = doCopy();
+                if (typeof copyResult == 'number') {
+                    numSourceItems = copyResult;
                     pasteMode();
-                    textLabel1.text = "Copied " + numNotes + " notes.\n\nNow select the notes to paste the rhythm into, then click Paste.";
                 } else {
-                    textLabel1.text = "There are no notes selected.\n\nPlease select 1 or more notes to copy the rhythm from, them click Copy.";
+                    textLabel1.text = errorText(copyResult) + ".";
+                    textLabel1.color = "red";
                 }
-            } else {
-                var err = doPaste();
-                if (!err) {
+            } else { // mode === "paste"
+                var pasteResult = doPaste();
+                if (!pasteResult) {
                     copyMode();
-                } else if (err === "noselection") {
-                    textLabel1.text = "There are no notes selected.\n\nPlease select 1 or more notes to paste the rhythm into, them click Paste.";
+                } else {
+                    textLabel1.text = errorText(pasteResult) + ".";
+                    textLabel1.color = "red";
                 }
             }
         }
@@ -85,15 +90,136 @@ MuseScore {
         }
     }
 
+    Label {
+        id: versionLabel
+        wrapMode: Text.WordWrap
+        text: "Copy/Paste Rhythm, Version " + version.split(/\./)[0];
+        font.pointSize:9
+        anchors.left: window.left
+        anchors.bottom: window.bottom
+        anchors.leftMargin: 10
+        anchors.bottomMargin: 10
+    }
+
+    function errorText(error) {
+        if (error === "noSelection") return "The selection must contain at least one item";
+        if (error === "hasTuplets") return "The selection may not contain a tuplet";
+        if (error === "targetSpansMeasures") return "The result will cross a measure boundary; this is not allowed";
+        if (error === "firstTargetTie") return "The first selected note may not be tied to a previous note";
+        if (error === "wrongNumItems") return "The selection must contain exactly " + numSourceItems + " items";
+        if (error === "differentTracks") return "The selection may not contain multiple staffs or multiple voices";
+        if (error === "otherVoices") return "The selected measure may not contain multiple voices";
+        return "Unknown error";
+    }
+
+    function copyMode() {
+        mode = "copy";
+        textLabel1.text = "";
+        textLabel2.text = "Select the notes to copy the rhythm from, then click Copy.";
+        buttonDoIt.text = "Copy";
+        buttonCancel.text = "Done";
+    }
+
+    function pasteMode() {
+        mode = "paste";
+        textLabel1.text = "Copied " + numSourceItems + " notes.";
+        textLabel1.color = "forestgreen";
+        textLabel2.text = "Select the notes to paste the rhythm into, then click Paste.";
+        buttonDoIt.text = "Paste";
+        buttonCancel.text = "Cancel";
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // The Code
     // -----------------------------------------------------------------------------------------------------
 
     // Captures the rhythm pattern of the current selection into the global variable "sourceRhythm".
-    // Returns true iff the pattern contains at least 1 note.
+    // Returns error if the pattern contains 0 notes, or contains tuplets.
     function doCopy() {
         sourceRhythm = Utils.getSelectedRhythm();
-        return sourceRhythm && sourceRhythm.length;
+        if (!sourceRhythm || !sourceRhythm.length) {
+            return "noSelection"
+        }
+        if (sourceRhythm[0].hasTuplets) {
+            return "hasTuplets";
+        }
+        return sourceRhythm.length;
+    }
+
+    // Validate the target selection.
+    function validateTarget(target) {
+        // The target must contain at least one item
+        if (!target || !target.notes.length) {
+            return "noSelection";
+        }
+
+        // The first item of the target must not be tied to a previous item
+        if (target.notes[0].tieBack) {
+            return "firstTargetTie";
+        }
+
+        var firstItem = target.notes[0];
+        var lastItem = target.notes[target.notes.length - 1];
+        var targetDuration = Utils.getTick(lastItem) - Utils.getTick(firstItem) + Utils.getDuration(lastItem);
+        if (targetDuration < sourceRhythm.duration) {
+            // TODO: 1 or more items that follow the target will be overwritten. If any of these items
+            // is a note, we should warn the user and allow them to cancel.
+        }
+
+        // Updated target must not cross measure boundary
+        var sourceDuration = sourceRhythm.reduce(function(acc, x) {return acc + x.duration;}, 0);
+        var startMeasure = Utils.getMeasure(firstItem);
+        var endMeasure = Utils.measureContaining(Utils.getTick(firstItem) + sourceDuration - 1);
+        if (!startMeasure.is(endMeasure)) {
+            return "targetSpansMeasures"
+        }
+
+        // Loop over the target items.
+        var track;
+        var prevTargetNoteTick;
+        var numItems = 0;
+        for (var i = 0; i < target.notes.length; i += 1) {
+            var targetNote = target.notes[i];
+
+            console.log(i, targetNote.track);
+            Utils.dumpElement("targetNote", targetNote);
+            // All notes must in the same track
+            if (i > 0 && track !== targetNote.track) {
+                return "differentTracks"
+            }
+            track = targetNote.track;
+
+            // A target item many not be part of a tuplet.
+            if (targetNote.tuplet || targetNote.parent.tuplet) { // for notes, we need to check the parent Chord
+                return "hasTuplets";
+            }
+
+            // Count the target items. We ignore items that are tied to a previous one,
+            // or that occur at the same time as the previous one.
+            if (!targetNote.tieBack && (prevTargetNoteTick !== Utils.getTick(targetNote))) {
+                numItems += 1;
+            }
+            prevTargetNoteTick = Utils.getTick(targetNote);
+        }
+
+        // The number of source and target items must be the same.
+        if (numItems !== sourceRhythm.length) {
+            return "wrongNumItems";
+        }
+
+        // No other voices may exist in the target area
+        var segment = startMeasure.firstSegment;
+        while (segment) {
+            for (var i = 0; i < 4; i += 1) {
+                var thisTrack = (target.staff * 4) + i;
+                if (track != thisTrack) {
+                    if (segment.elementAt(thisTrack)) {
+                        return "otherVoices";
+                    }
+                }
+            }
+            segment = segment.nextInMeasure;
+        }
     }
 
     // Pastes the previously-captured rhythm pattern into the current selection.
@@ -106,20 +232,12 @@ MuseScore {
 
         // Capture the target selection into "target".
         var target = Utils.getSelectedNotes();
-        if (!target || !target.notes.length) {
-            return "noselection";
-        }
 
         // Validate the target selection.
-        // ... TODO ...
-        // first note must not be tieback
-        // updated target must not cross measure boundary
-        // all target notes must be in same track
-        // no other voices can exist in the target area
-        // must have same number of notes as source
-        // no tuplets in target
-        // no tuplets in source
-        // warn if we will overwrite 1 or more notes that follow the target
+        var error = validateTarget(target);
+        if (error) {
+            return error;
+        }
 
         // Create a temp area at the end of the score, where we will assemble the updated target notes.
         // Workaround: we only need one measure, but we insert 2 measures because something wasn't working
@@ -244,21 +362,40 @@ MuseScore {
             target.staff, target.staff + 1);
     }
 
+    function okMuseScoreVersion() {
+        // console.log("mscoreVersion", mscoreVersion);
+        // console.log("mscoreMajorVersion", mscoreMajorVersion);
+        // console.log("mscoreMinorVersion", mscoreMinorVersion);
+        // console.log("mscoreUpdateVersion", mscoreUpdateVersion);
+
+        // We require MuseScore 3.5 with PR https://github.com/musescore/MuseScore/pull/6091
+        return curScore.selection.selectRange
+            && curScore.selection.select
+            && curScore.selection.isRange;
+    }
+
     onRun: {
-        copyMode();
+        if (okMuseScoreVersion()) {
+            copyMode();
+        } else {
+            textLabel1.text = "This plugin requires a newer version of MuseScore.";
+            textLabel1.color = "red";            
+            buttonDoIt.visible = false;
+            buttonCancel.text = "Done";
+        }
     }
 
     /*
     to implement:
-        validation of source/target
+        analytics
         startCmd/endCmd
-        check for sufficient version of MuseScore
-        better UI layout, larger font
+        test for tuplets (using build with tuplets AND selections available)
+        implement tuplets!
+        document all bugs and usability issues in MuseScore and in new selection API
 
     test plan:
         make selection with click-select or shift-select
         after we finished, the updated target should be visible and selected
-        test all validation violations
 
     select bugs:
         selectRange : to select entire last measure, endTick must be 1 past the end of score.

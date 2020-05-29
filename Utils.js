@@ -1,6 +1,6 @@
 
 // Returns a list of all the notes in the current score's selection,
-// in the form [{duration: <num>, tick: <num>, rest: <bool>, durations: []}, ...]
+// in the form [{duration: <num>, tick: <num>, rest: <bool>, durations: [], hasTuplets: <bool>}, ...]
 // "tick" is relative to the start of the selection.
 // Each set of tied notes is considered one note, whose "duration" is the sum of all the tied notes.
 // "durations" is a list of each individual tied note's duration.
@@ -9,6 +9,7 @@ function getSelectedRhythm() {
     ensureSelectionIsRange();
 
     var result = [];
+    var hasTuplets = false;
 
     // locate the selection
     var cursor = curScore.newCursor();
@@ -39,7 +40,7 @@ function getSelectedRhythm() {
                 var duration = cursor.element.duration;
                 var durationInTicks = (division * 4) * duration.numerator / duration.denominator;
                 var resultNote = {duration: durationInTicks, tick: cursor.tick - startTick,
-                    durations: [durationInTicks, ]};
+                    durations: [durationInTicks]};
 
                 if (cursor.element.type === Element.CHORD) {
                     // TODO: if the note is part of a triplet, adjust the numbers as required.
@@ -68,11 +69,15 @@ function getSelectedRhythm() {
                     resultNote.rest = true;
                     result.push (resultNote);
                 }
+                hasTuplets = hasTuplets || cursor.element.tuplet;
             }
             cursor.next();
         }
     }
 
+    if (result.length > 0 && hasTuplets) {
+        result[0].hasTuplets = true;
+    }
     return result.length > 0 ? result : null;
 }
 
@@ -192,7 +197,7 @@ function getDuration(element) {
 
 function selectNote(note) {
     curScore.selection.selectRange(getTick(note), getTick(note) + getDuration(note), 
-        note.track / 4, (note.track / 4) + 1);
+        Math.floor(note.track / 4), Math.floor(note.track / 4) + 1);
 }    
 
 function dumpCurrentSelection() {
@@ -245,8 +250,7 @@ function selectNotes(notes) {
         minTrack = Math.min(minTrack, note.track);
         maxTrack = Math.max(maxTrack, note.track);
     }
-    // console.log("selectRange", minTick, maxTick, minTrack / 4, (maxTrack / 4) + 1);
-    curScore.selection.selectRange(minTick, maxTick, minTrack / 4, (maxTrack / 4) + 1);
+    curScore.selection.selectRange(minTick, maxTick, Math.floor(minTrack / 4), Math.floor(maxTrack / 4) + 1);
 }
 
 // If the current selection is not a range, this function changes the current selection to a range selection.
@@ -256,8 +260,7 @@ function selectNotes(notes) {
 // This is necessary because some MuseScore commands (e.g. copy), and some of our Utils 
 // functions (e.g. getSelectedRhythm, ) only work properly on range selections.
 function ensureSelectionIsRange() {
-    var sel = curScore.selection;
-    if (!sel.isRange) {
+    if (!curScore.selection.isRange) {
         selectNotes(getSelectedNotes().notes);
     }
 }
@@ -288,7 +291,7 @@ function getSelectedNotes() {
             }
         }
     }
-    result.staff = result.track / 4;
+    result.staff = Math.floor(result.track / 4);
 
     // console.log("getSelectedNotes", result.notes.length, result.track, result.measure, result.beginTick, result.endTick);
     return result;
@@ -301,6 +304,18 @@ function getMeasure(element) {
         }
         element = element.parent;
     }
+    return null;
+}
+
+function measureContaining(tick) {
+    var measure = curScore.firstMeasure;
+    while (measure) {
+        if ((measure.firstSegment.tick <= tick) && (tick < measure.lastSegment.tick)) {
+            return measure;
+        }
+        measure = measure.nextMeasure;
+    }
+    console.log("measureContaining(" + tick + ") not found");
     return null;
 }
 

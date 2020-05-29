@@ -1,104 +1,200 @@
 import MuseScore 3.0
 import QtQuick 2.1
-import QtQuick.Dialogs 1.0
-import QtQuick.Controls 1.1
+import QtQuick.Dialogs 1.3
+import QtQuick.Controls 2.1
 import "Utils.js" as Utils
 
 MuseScore {
-    version: "1.0"
+    version: "2.0"
     description: ""
     menuPath: "Plugins.Copy/Paste Rhythm…"
     pluginType: "dock"
     dockArea: "left"
     id: window
-    width:  200;
-    height: 200;
+    width:  400;
+    height: 250;
     property var sourceRhythm;
     property var numSourceItems;
-    property var mode;
 
     // -----------------------------------------------------------------------------------------------------
     // The UI
     // -----------------------------------------------------------------------------------------------------
 
+    // Copy controls
+
     Label {
-        id: textLabel1
+        id: copyPrompt1
         wrapMode: Text.WordWrap
-        text: ""
-        color: "black"
+        text: "Click"
         font.pointSize:15
-        anchors.left: window.left
         anchors.top: window.top
-        anchors.leftMargin: 10
         anchors.topMargin: 15
+        anchors.left: window.left
+        anchors.leftMargin: 10
+    }
+
+    Button {
+        id : buttonCopy
+        text: "Copy"
+        anchors.top: window.top
+        anchors.topMargin: 10
+        anchors.left: copyPrompt1.right
+        anchors.leftMargin: 10
+        background: Rectangle {
+            border.color: buttonCopy.pressed ? "black" : "gray"
+            border.width: 1
+            radius: 5
+        }
+        onClicked: {
+            var copyResult = doCopy();
+            if (typeof copyResult == 'number') {
+                copyMessage.text = "Copied " + copyResult + " items.";
+                copyMessage.color = "forestgreen";
+                numSourceItems = copyResult;
+                pasteMessage.text = "";
+                curScore.startCmd();
+                curScore.selection.clear();
+                curScore.endCmd();
+            } else {
+                copyMessage.text = errorText(copyResult) + ".";
+                copyMessage.color = "red";
+                numSourceItems = 0;
+            }
+        }
     }
 
     Label {
-        id: textLabel2
+        id: copyPrompt2
+        wrapMode: Text.WordWrap
+        text: "to copy the rhythm of the selected notes."
+        font.pointSize:15
+        anchors.top: window.top
+        anchors.topMargin: 15
+        anchors.left: buttonCopy.right
+        anchors.leftMargin: 10
+    }
+
+    Label {
+        id: copyMessage
         wrapMode: Text.WordWrap
         text: ""
         font.pointSize:15
+        anchors.top: copyPrompt1.bottom
+        anchors.topMargin: 15
         anchors.left: window.left
-        anchors.top: textLabel1.bottom
         anchors.leftMargin: 10
-        anchors.topMargin: 10
     }
 
-    Button {
-        id : buttonDoIt
-        text: ""
-        anchors.bottom: window.bottom
+    ToolSeparator {
+        id: separator
+        orientation: Qt.Horizontal
+        anchors.top: copyMessage.bottom
+        anchors.topMargin: 10
+        anchors.left: window.left
         anchors.right: window.right
+    }
+
+    // Paste controls
+
+    Label {
+        id: pastePrompt1
+        enabled: !!numSourceItems
+        opacity: !!numSourceItems ? 1.0 : 0.3
+        wrapMode: Text.WordWrap
+        text: "Click"
+        font.pointSize:15
+        anchors.top: separator.bottom
         anchors.topMargin: 10
-        anchors.bottomMargin: 10
-        anchors.rightMargin: 10
+        anchors.left: window.left
+        anchors.leftMargin: 10
+    }
+
+    Button {
+        id : buttonPaste
+        enabled: !!numSourceItems
+        opacity: !!numSourceItems ? 1.0 : 0.3
+        text: "Paste"
+        anchors.top: separator.bottom
+        anchors.topMargin: 5
+        anchors.left: pastePrompt1.right
+        anchors.leftMargin: 10
+        background: Rectangle {
+            border.color: buttonPaste.pressed ? "black" : "gray"
+            border.width: 1
+            radius: 5
+        }
         onClicked: {
-            if (mode === "copy") {
-                var copyResult = doCopy();
-                if (typeof copyResult == 'number') {
-                    numSourceItems = copyResult;
-                    pasteMode();
-                } else {
-                    textLabel1.text = errorText(copyResult) + ".";
-                    textLabel1.color = "red";
-                }
-            } else { // mode === "paste"
-                var pasteResult = doPaste();
-                if (!pasteResult) {
-                    copyMode();
-                } else {
-                    textLabel1.text = errorText(pasteResult) + ".";
-                    textLabel1.color = "red";
-                }
+            var validateResult = validateTarget(Utils.getSelectedNotes());
+            if (!validateResult) {
+                doPaste();
+                pasteMessage.text = "Done.";
+                pasteMessage.color = "forestgreen";
+            } else if (validateResult === "willOverwrite") {
+                overwriteDialog.open();
+            } else {
+                pasteMessage.text = errorText(validateResult) + ".";
+                pasteMessage.color = "red";
             }
         }
     }
 
-    Button {
-        id : buttonCancel
-        text: ""
-        anchors.bottom: window.bottom
-        anchors.right: buttonDoIt.left
+    Label {
+        id: pastePrompt2
+        enabled: !!numSourceItems
+        opacity: !!numSourceItems ? 1.0 : 0.3
+        wrapMode: Text.WordWrap
+        text: "to paste the rhythm into the selected notes."
+        font.pointSize:15
+        anchors.top: separator.bottom
         anchors.topMargin: 10
-        anchors.bottomMargin: 10
-        onClicked: {
-            if (text === "Done") {
-                Qt.quit();
-            } else {
-                copyMode();
-            }
-        }
+        anchors.left: buttonPaste.right
+        anchors.leftMargin: 10
     }
+
+    Label {
+        id: pasteMessage
+        enabled: !!numSourceItems
+        opacity: !!numSourceItems ? 1.0 : 0.3
+        wrapMode: Text.WordWrap
+        text: ""
+        font.pointSize:15
+        anchors.top: pastePrompt1.bottom
+        anchors.topMargin: 15
+        anchors.left: window.left
+        anchors.leftMargin: 10
+    }
+
+
+    // Other stuff
 
     Label {
         id: versionLabel
         wrapMode: Text.WordWrap
-        text: "Copy/Paste Rhythm, Version " + version.split(/\./)[0];
         font.pointSize:9
-        anchors.left: window.left
         anchors.bottom: window.bottom
-        anchors.leftMargin: 10
         anchors.bottomMargin: 10
+        anchors.right: window.right
+        anchors.rightMargin: 10
+    }
+
+    MessageDialog {
+        id: overwriteDialog
+        visible: false
+        title: "Overwrite?"
+        icon: StandardIcon.Question
+        text: "One or more notes that follow the paste selection will be overwritten. OK to overwrite?"
+        // detailedText: "blah blah blah."
+        standardButtons: StandardButton.Yes | StandardButton.No
+        Component.onCompleted: visible = true
+        onYes: {
+            doPaste();
+            pasteMessage.text = "Done.";
+            pasteMessage.color = "forestgreen";
+        }
+        onNo: {
+            pasteMessage.text = "Paste cancelled";
+            pasteMessage.color = "red";
+        }
     }
 
     function errorText(error) {
@@ -110,23 +206,6 @@ MuseScore {
         if (error === "differentTracks") return "The selection may not contain multiple staffs or multiple voices";
         if (error === "otherVoices") return "The selected measure may not contain multiple voices";
         return "Unknown error";
-    }
-
-    function copyMode() {
-        mode = "copy";
-        textLabel1.text = "";
-        textLabel2.text = "Select the notes to copy the rhythm from, then click Copy.";
-        buttonDoIt.text = "Copy";
-        buttonCancel.text = "Done";
-    }
-
-    function pasteMode() {
-        mode = "paste";
-        textLabel1.text = "Copied " + numSourceItems + " notes.";
-        textLabel1.color = "forestgreen";
-        textLabel2.text = "Select the notes to paste the rhythm into, then click Paste.";
-        buttonDoIt.text = "Paste";
-        buttonCancel.text = "Cancel";
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -150,7 +229,7 @@ MuseScore {
     function validateTarget(target) {
         // The target must contain at least one item
         if (!target || !target.notes.length) {
-            return "noSelection";
+            return "wrongNumItems";
         }
 
         // The first item of the target must not be tied to a previous item
@@ -158,18 +237,12 @@ MuseScore {
             return "firstTargetTie";
         }
 
-        var firstItem = target.notes[0];
-        var lastItem = target.notes[target.notes.length - 1];
-        var targetDuration = Utils.getTick(lastItem) - Utils.getTick(firstItem) + Utils.getDuration(lastItem);
-        if (targetDuration < sourceRhythm.duration) {
-            // TODO: 1 or more items that follow the target will be overwritten. If any of these items
-            // is a note, we should warn the user and allow them to cancel.
-        }
-
         // Updated target must not cross measure boundary
+        var firstItem = target.notes[0];
         var sourceDuration = sourceRhythm.reduce(function(acc, x) {return acc + x.duration;}, 0);
+        var lastTick = Utils.getTick(firstItem) + sourceDuration - 1;
         var startMeasure = Utils.getMeasure(firstItem);
-        var endMeasure = Utils.measureContaining(Utils.getTick(firstItem) + sourceDuration - 1);
+        var endMeasure = Utils.measureContaining(lastTick);
         if (!startMeasure.is(endMeasure)) {
             return "targetSpansMeasures"
         }
@@ -181,8 +254,6 @@ MuseScore {
         for (var i = 0; i < target.notes.length; i += 1) {
             var targetNote = target.notes[i];
 
-            console.log(i, targetNote.track);
-            Utils.dumpElement("targetNote", targetNote);
             // All notes must in the same track
             if (i > 0 && track !== targetNote.track) {
                 return "differentTracks"
@@ -220,6 +291,20 @@ MuseScore {
             }
             segment = segment.nextInMeasure;
         }
+
+        // If one or more notes that follow the target will be overwritten, we should
+        // warn the user and allow her to cancel.
+        var lastItem = target.notes[target.notes.length - 1];
+        var segment = Utils.getSegment(lastItem).nextInMeasure;
+        while (segment) {
+            if (segment.segmentType.toString() === "ChordRest") {
+                var element = segment.elementAt(track);
+                if (element && element.type === Element.CHORD && segment.tick <= lastTick) {
+                    return "willOverwrite";
+                }
+            }
+            segment = segment.nextInMeasure;
+        }
     }
 
     // Pastes the previously-captured rhythm pattern into the current selection.
@@ -232,12 +317,6 @@ MuseScore {
 
         // Capture the target selection into "target".
         var target = Utils.getSelectedNotes();
-
-        // Validate the target selection.
-        var error = validateTarget(target);
-        if (error) {
-            return error;
-        }
 
         // Create a temp area at the end of the score, where we will assemble the updated target notes.
         // Workaround: we only need one measure, but we insert 2 measures because something wasn't working
@@ -369,33 +448,33 @@ MuseScore {
         // console.log("mscoreUpdateVersion", mscoreUpdateVersion);
 
         // We require MuseScore 3.5 with PR https://github.com/musescore/MuseScore/pull/6091
-        return curScore.selection.selectRange
-            && curScore.selection.select
-            && curScore.selection.isRange;
+        return curScore.selection.selectRange !== undefined
+            && curScore.selection.select !== undefined
+            && curScore.selection.isRange !== undefined;
     }
 
     onRun: {
-        if (okMuseScoreVersion()) {
-            copyMode();
-        } else {
-            textLabel1.text = "This plugin requires a newer version of MuseScore.";
-            textLabel1.color = "red";            
-            buttonDoIt.visible = false;
-            buttonCancel.text = "Done";
+        overwriteDialog.visible = false;
+        versionLabel.text = "Copy/Paste Rhythm, Version " + version.split(/\./)[0];
+        if (!okMuseScoreVersion()) {
+            copyPrompt.text = "This plugin requires a newer version of MuseScore.";
+            copyPrompt.color = "red";            
+            buttonCopy.visible = false;
         }
     }
 
     /*
-    to implement:
+    to do:
         analytics
         startCmd/endCmd
         test for tuplets (using build with tuplets AND selections available)
-        implement tuplets!
+        implement tuplets
         document all bugs and usability issues in MuseScore and in new selection API
 
     test plan:
         make selection with click-select or shift-select
         after we finished, the updated target should be visible and selected
+        Ok to overwrite? message should happen when appropriate
 
     select bugs:
         selectRange : to select entire last measure, endTick must be 1 past the end of score.

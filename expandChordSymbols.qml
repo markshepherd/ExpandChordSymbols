@@ -343,7 +343,6 @@ MuseScore {
     Label {
         id: versionLabel
         wrapMode: Text.WordWrap
-        text: "Expand Chord Symbols, Version " + version.split(/\./)[0];
         font.pointSize:9
         anchors.left: window.left
         anchors.bottom: window.bottom
@@ -489,5 +488,7 @@ MuseScore {
         }
 
         setupRhythmPatternUI();
+
+        versionLabel.text = "Expand Chord Symbols, Version " + version.split(/\./)[0];
     }
 }

@@ -307,6 +307,16 @@ function getMeasure(element) {
     return null;
 }
 
+function getSegment(element) {
+    while (element) {
+        if (element.name === "Segment") {
+            return element;
+        }
+        element = element.parent;
+    }
+    return null;
+}
+
 function measureContaining(tick) {
     var measure = curScore.firstMeasure;
     while (measure) {
